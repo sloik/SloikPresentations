@@ -4,7 +4,7 @@ import UIKit
  
  # True Story
  
- This is something that happened to me at work. During a code review I have stumbled upon a peace of code that looked something like this:
+ This is something that happened to me at work. During a code review I have stumbled upon a piece of code that looked something like this:
  */
 
 
@@ -29,9 +29,9 @@ extension UIView {
  
  If you have done any UIKit work then you will recognise this method in an instance! The need is obvious.
  
- If this is new for you then in a deep view hierarchy of a view controller you have some custom views (or not necessary custom). And you want to call a method on each of them no matter how deep the rabbit whole goes.
+ If this is new for you then in a deep view hierarchy of a view controller you have some custom views (or not necessary custom). And you want to call a method on each of them no matter how deep the rabbit hole goes.
  
- Sure you can use `subviews` but what happens when those views also have subviews and you need to get to them to? This extension is an answer for that.
+ Sure you can use `subviews` but what happens when those views also have subviews and you need to get to them too? This extension is an answer to that.
  
  Let's see how it works. We need some views and subviews and classes... lets do this ;)
  */
@@ -115,7 +115,7 @@ let viewHierarchy: B = {
  └──────────┘
  ```
  
- Ok so now we can take this extension and take it for a spin. We wont do anything with those instances only pluck out them from this hierarchy.
+ Ok so now we can take this extension and take it for a spin. We won't do anything with those instances only pluck out them from this hierarchy.
  */
 
 let allAs = viewHierarchy.originalAllSubViewsOf(type: A.self)
@@ -133,7 +133,7 @@ run("🐡 original implementation") {
 /*:
  As you can see this kind of method can be very handy. Especially if you want to do something to only one kind of views that are visible on screen.
  
- What's more cool that this is strongly type. Each time we are getting an array of the views that we are interested. No need to cast no nothing. Good, cool API to use... but ;)
+ What's cooler that this is strongly typed. Each time we are getting an array of the views that we are interested in. No need to cast no nothing. Good, cool API to use... but ;)
  
  Lets take a look at the implementation one more time:
  
@@ -150,11 +150,11 @@ run("🐡 original implementation") {
  }
 ````
  
-It's function with a nested function that calls itself recursively. There is a check if current view also fits the predicate and should be added to an `all` accumulator array. What's a bit messy is that mutation of this array is done by the inner function... but the whole thing is internal to the implementation so... like you see. There are a lot of tradeoffs here. Name of the function conveys more of the intent of the developer than the implementation.
+It's function with a nested function that calls itself recursively. There is a check if the current view also fits the predicate and should be added to an `all` accumulator array. What's a bit messy is that mutation of this array is done by the inner function... but the whole thing is internal to the implementation so... like you see. There are a lot of tradeoffs here. The name of the function conveys more of the intent of the developer than the implementation.
  
  ## Can we do better?
  
-Define better. For now I will say better is _less code_ and reuse Swift higher order functions. So after some time of fiddling around I have come up with this:
+Define better. For now I will say better is _less code_ and reuse Swift higher-order functions. So after some time of fiddling around, I have come up with this:
  */
 
 extension UIView {
@@ -210,7 +210,7 @@ run("🌟 reduced implementation") {
  
  ## Can we do better?
   
- Define better. There are more relation ships like this in UIKit and who know where else. Let's take **UIViewController** for a spin. You can add a **child view controller** to it.
+ Define better. There are more relationships like this in UIKit and who knows where else. Let's take **UIViewController** for a spin. You can add a **child view controller** to it.
  */
 
 class AVC: UIViewController {}
@@ -323,7 +323,7 @@ extension UIViewController {
 }
 
 /*:
- As you can see it was a minor rename but now we have the same stuff that we had for views working for UIControllers! I did say working? Lets check:
+ As you can see it was a minor rename but now we have the same stuff that we had for views working for UIViewControllers! I did say working? Lets check:
  */
 
 let allAVCs = controllerHierarchy.allChildren(of: AVC.self)
@@ -361,7 +361,7 @@ func substuff<T, W>(
 /*:
  As you can see this is the same shape. As a bonus because there is no information about any of the types we cannot mutate anything! But let's take it pice by pice.
  
- First argument is the _Type_ we are interested. Second is the instance this function will start this working. And this function needs to know how to extract some stuff from thing we are currently working on. To put it in context of previous examples how to get subviews from a view and children from view controller.
+ The first argument is the _Type_ we are interested in. Second is the instance this function will start this working. And this function needs to know how to extract some stuff from thing we are currently working on. To put it in context of previous examples how to get subviews from a view and children from ViewController.
  
  Ok let's check this out. I will add more extensions but this time implementation will come from this function.
  */
@@ -499,7 +499,7 @@ run("🍣 Test all the things") {
  }
  ````
  
- You can say that the most interesting stuff is the `extractStuff` part. And it is! That's the part when you inject behaviour of getting substuff! And you can lift a [KeyPath to a function](https://github.com/apple/swift-evolution/blob/master/proposals/0249-key-path-literal-function-expressions.md) so everything is statically checked!
+ You can say that the most interesting stuff is the `extractStuff` part. And it is! That's the part when you inject the behavior of getting substuff! And you can lift a [KeyPath to a function](https://github.com/apple/swift-evolution/blob/master/proposals/0249-key-path-literal-function-expressions.md) so everything is statically checked!
 
 # Conclusion
  
