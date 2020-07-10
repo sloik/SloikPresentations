@@ -1,5 +1,9 @@
 #!/bin/bash
 
+##################################
+# Jira ticket to commit message. #
+################################## 
+
 # get current branch
 branchName=`git rev-parse --abbrev-ref HEAD`
 
