@@ -5,19 +5,19 @@
 
 import Foundation
 
-var watki : [Thread] = []
+var threads : [Thread] = []
 
 for i in 0...20 {
-    let t = Thread {
+    let createdThread = Thread {
         let message = String(repeating: "\(i)", count: 20)
         print(message)
     }
     
-    watki.append(t)
+    threads.append( createdThread )
 }
 
-for t in watki {
-    t.start()
+for thread in threads {
+    thread.start()
 }
 
 print("               Glowny watek: \(Thread.isMainThread)")

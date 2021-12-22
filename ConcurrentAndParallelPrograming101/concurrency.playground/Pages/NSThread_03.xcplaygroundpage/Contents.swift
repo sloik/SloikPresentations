@@ -5,16 +5,20 @@
 
 import Foundation
 
-class Test: NSObject {
-    @objc func jestRobota() {
+final class Test: NSObject {
+    @objc func jobToDo() {
         print("Glowny watek: \(Thread.isMainThread)")
     }
 }
 
-let testowy = Test()
+let testInstance = Test()
 
 //: Wątki są też tworzone w różnych innych okolicznościach jak np:
-testowy.performSelector(inBackground: #selector(testowy.jestRobota), with: nil)
+testInstance
+    .performSelector(
+        inBackground: #selector(testInstance.jobToDo),
+        with: .none
+    )
 
 //: [Wstecz](@previous) | [Następna strona](@next)
 
