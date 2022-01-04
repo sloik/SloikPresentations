@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<playground version='6.0' target-platform='ios' auto-termination-delay='16' display-mode='rendered' timelineScrubberEnabled='true'>
+<playground version='6.0' target-platform='ios' auto-termination-delay='16' display-mode='raw'>
     <pages>
         <page name='Spis_Tresci'/>
         <page name='NSThread_01'/>
@@ -17,5 +17,6 @@
         <page name='GCD_02_Dispatch_Groups'/>
         <page name='GCD_03_Dispatch_Groups_Barrier'/>
         <page name='GCD_04_Dispatch_Once_After'/>
+        <page name='async_await_01'/>
     </pages>
 </playground>
