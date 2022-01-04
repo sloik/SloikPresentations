@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EFAC58BA1FD0B7DB00F00A94 /* P01.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAFEC0A71D8A967100A7C995 /* P01.cpp */; };
+		6495DACE2784FA25003509D7 /* P01.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAFEC0A71D8A967100A7C995 /* P01.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -103,6 +103,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = BAFEC0821D8998F400A7C995;
@@ -120,7 +121,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EFAC58BA1FD0B7DB00F00A94 /* P01.cpp in Sources */,
+				6495DACE2784FA25003509D7 /* P01.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

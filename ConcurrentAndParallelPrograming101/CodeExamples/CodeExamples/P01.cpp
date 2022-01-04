@@ -6,7 +6,6 @@
 #include <unistd.h>
 #include <iostream>
 
-
 int main(int argc, const char * argv[]) {
     
     std::cout << "Rodzic:      getpid -> " << ::getpid() << " (parent -> " << ::getppid() << ")" << std::endl << std::endl;

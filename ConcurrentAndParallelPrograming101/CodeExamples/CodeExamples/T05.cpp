@@ -14,41 +14,36 @@
  
  */
 
-void zdeponuj(int kwota, int *konto) {
-    *konto += kwota;
+void setNewBalance(int ammount, int *pBalance) {
+    *pBalance += ammount;
 }
 
 
 int main(int argc, const char * argv[]) {
     
-    int status = 0; // wspoldzielony zasob
-    
-    
-    std::vector<std::thread> watki; // trzymamy watki tutaj
+    int balance = 0; // wspoldzielony zasob
+
+    std::vector<std::thread> threads; // trzymamy watki tutaj
     
     for (int i = 0; i < 1000; ++i) {
         
-//         zdeponuj(100, &status);
-//         zdeponuj(-100, &status);
-
-        
         // dodajemy lambdy z praca do wykonania na watku
-        watki.emplace_back([&] {
+        threads.emplace_back([&] {
 
             std::this_thread::sleep_for(std::chrono::milliseconds(random()%100)); // szczypta losowosci
 
-            zdeponuj(100, &status);
+            setNewBalance(100, &balance);
 
             std::this_thread::sleep_for(std::chrono::milliseconds(random()%100)); // dwie szczypty
 
-            zdeponuj(-100, &status);
+            setNewBalance(-100, &balance);
         });
     }
     
     // laczymy wszystkie wystartowane watki
-    for (auto &t : watki) { t.join(); }
+    for (auto &thread : threads) { thread.join(); }
     
-    std::cout << "Stan konta po: " << status << std::endl << std::endl;
+    std::cout << "Stan konta po: " << balance << std::endl << std::endl;
     
     return 0;
 }

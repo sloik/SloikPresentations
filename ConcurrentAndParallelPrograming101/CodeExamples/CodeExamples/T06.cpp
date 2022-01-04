@@ -10,15 +10,15 @@
  * Mutex.
  */
 
-void zdeponuj(int kwota, int *konto) {
-    *konto += kwota;
+void setNewBalance(int ammount, int *pBalance) {
+    *pBalance += ammount;
 }
 
 int main(int argc, const char * argv[]) {
     
-    int status = 0; // wspoldzielony zasob
+    int balance = 0; // wspoldzielony zasob
     
-    std::vector<std::thread> watki; // trzymamy watki tutaj
+    std::vector<std::thread> threads; // trzymamy watki tutaj
     
     std::mutex _mutex;
     
@@ -28,11 +28,11 @@ int main(int argc, const char * argv[]) {
     for (int i = 0; i < 10000; ++i) {
         
         // dodajemy lambdy z praca do wykonania na watku
-        watki.emplace_back([&] {
+        threads.emplace_back([&] {
             
             _mutex.lock(); // -- start krytycznej sekcji kodu ---
             
-            zdeponuj(100, &status);
+            setNewBalance(100, &balance);
 
             _mutex.unlock(); // -- stop krytycznej sekcji kodu --
             
@@ -44,18 +44,18 @@ int main(int argc, const char * argv[]) {
             
             _mutex.lock(); // -- start krytycznej sekcji kodu ---
             
-            zdeponuj(-100, &status);
+            setNewBalance(-100, &balance);
             
             _mutex.unlock(); // -- stop krytycznej sekcji kodu --
         });
     }
     
     // laczymy wszystkie wystartowane watki
-    for (auto &t : watki) { t.join(); }
+    for (auto &thread : threads) { thread.join(); }
     
     
     std::cout << "         Czas: " << difftime(std::time(NULL), start) << std::endl;
-    std::cout << "Stan konta po: " << status << std::endl << std::endl;
+    std::cout << "Stan konta po: " << balance << std::endl << std::endl;
     
     return 0;
 }

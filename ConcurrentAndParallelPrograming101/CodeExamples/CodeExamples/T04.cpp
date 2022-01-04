@@ -8,14 +8,14 @@
  * Zobaczmy teraz co się stanie gdy do utworzenia wątku wykorzystamy funkcję pomocniczą.
  */
 
-std::vector<std::thread> generujWatki() {
+std::vector<std::thread> createThreads() {
     
-    std::vector<std::thread> watki;
+    std::vector<std::thread> functionThreads;
     
     for (int i = 0; i < 20; ++i) {
         
         // dodajemy lambdy z praca do wykonania na watku
-        watki.emplace_back([&]{ // co sie stanie jak zlapiemy zmienna przez referencje
+        functionThreads.emplace_back([&]{ // co sie stanie jak zlapiemy zmienna przez referencje
             // usypiamy watek na chwilunie
             std::this_thread::sleep_for(std::chrono::milliseconds(10 * i));
             
@@ -24,16 +24,16 @@ std::vector<std::thread> generujWatki() {
         });
     }
     
-    return watki;
+    return functionThreads;
 }
 
 
 int main(int argc, const char * argv[]) {
 
-    std::vector<std::thread> watki = generujWatki();
+    std::vector<std::thread> threads = createThreads();
         
     // laczymy wszystkie wystartowane watki
-    for (auto &t : watki) { t.join(); }
+    for (auto &thread : threads) { thread.join(); }
     
     return 0;
 }

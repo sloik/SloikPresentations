@@ -2,26 +2,34 @@
 #include <thread>
 
 
-void watek1() {
+void thread1() {
     std::cout << "1111111111111111111111111111111111111111\n";
 }
 
-void watek2() {
+void thread2() {
     std::cout << "2222222222222222222222222222222222222222\n";
 }
 
+///
+/// Kolejność wypisywanych komunikatów jest nie deterministryczna.
+/// Wystarczy uruchomić przykład kilka razy.
+///
 int main(int argc, const char * argv[]) {
 
     // Tworzymy nowy watek
-    std::thread t1(watek1); // w tym momencie zostal utworozny nowy watek 
-    std::thread t2(watek2); // i tutaj tez!
+    std::thread t1(thread1); // w tym momencie zostal utworozny nowy watek
+    std::thread t2(thread2); // i tutaj tez!
     
-    // Wypisujemy z glownego watku
+    // Wypisujemy z watku
     std::cout << "0000000000000000000000000000000000000000\n";
 
-    
+    std::cout << "Waiting for end\n";
+
     t1.join();
     t2.join();
-    
+
+    std::cout << "Done\n";
+
+
     return 0;
 }

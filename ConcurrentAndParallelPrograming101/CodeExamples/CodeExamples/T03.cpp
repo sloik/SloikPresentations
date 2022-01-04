@@ -6,23 +6,25 @@
 
 /*
     Co się stanie gdy zmienna w "bloku" zostanie złapana przez referencje?
+
+    Hint: Współdzielony stan to zło!
  */
 
 
 int main(int argc, const char * argv[]) {
 
-    std::vector<std::thread> watki; // trzymamy watki tutaj
+    std::vector<std::thread> threads; // trzymamy watki tutaj
     
     for (int i = 0; i < 9; ++i) {
         
         // dodajemy lambdy z praca do wykonania na watku
-        watki.emplace_back([&i]{ // <-- referencja do licznika
+        threads.emplace_back([&i]{ // <-- referencja do licznika
             
             // usypiamy watek na chwilunie
             std::this_thread::sleep_for(std::chrono::milliseconds(10 * i));
             
             // zadanie jakie chcemy wykonac
-            auto message = std::string(5, *std::to_string(i).c_str()); // 11111111 etc.
+            auto message = std::string(5, *std::to_string(i).c_str()); // 11111 etc.
             std::cout << message << std::endl;
             
         });
@@ -30,7 +32,7 @@ int main(int argc, const char * argv[]) {
     }
     
     // laczymy wszystkie wystartowane watki
-    for (auto &t : watki) { t.join(); }
+    for (auto &thread : threads) { thread.join(); }
     
     return 0;
 }
