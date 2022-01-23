@@ -11,63 +11,63 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 //: Z technicznego punktu widzenia NSOperationQueue jest instancją klasy NSOperationQueue, która umożliwia nam te rzeczy wpsomniane wczesniej.
 
 
-let kolejka = OperationQueue()
-kolejka.maxConcurrentOperationCount = 2; // pobawmy się nieco wartością tej zmiennej 1,2,5,15 etc.
+let queue = OperationQueue()
+queue.maxConcurrentOperationCount = 2; // pobawmy się nieco wartością tej zmiennej 1,2,5,15 etc.
 
 //: Możemy dodawać zadania bezpośrednio do kolejki jako bloki bez konieczności tworzenia instancji NSOperacji. Zadania wykonują się natychmiast po dodaniu (oczywiście jeżeli kolejka na to pozwoli, jak nie to czekają na swoją kolej ;)).
 
-xtimeBlock("Dodawanie blokow do kolejki") {
-    kolejka.addOperation { sleep(2); print("Adam")   }
-    kolejka.addOperation { sleep(2); print("Babie")  }
-    kolejka.addOperation { sleep(2); print("Cebule") }
-    kolejka.addOperation { sleep(2); print("Daje")   }
+xtimeBlock("Dodawanie bloków do kolejki") {
+    queue.addOperation { sleep(2); print("Adam")   }
+    queue.addOperation { sleep(2); print("Babie")  }
+    queue.addOperation { sleep(2); print("Cebule") }
+    queue.addOperation { sleep(2); print("Daje")   }
     
-    kolejka.waitUntilAllOperationsAreFinished()
+    queue.waitUntilAllOperationsAreFinished()
 }
 
-//: Jak widać możemy kontrolować ile zadań na raz się wykonuje. Co więcej przy ustawieniu max na 1 otrzymujemy kolejke seryjną w której zadania się wykonuje jedno za drugim w kolejności ich dodania.
+//: Jak widać możemy kontrolować ile zadań naraz się wykonuje. Co więcej przy ustawieniu max na 1 otrzymujemy kolejkę seryjną w której zadania się wykonuje jedno za drugim w kolejności ich dodania.
 
 //: ## Dodawanie NSOperacji
 
-class ProstaOperacja: Operation {
-    let wiadomosc:String
+class SimpleOperation: Operation {
+    let message: String
     
-    init(wiadomosc: String) {
-        self.wiadomosc = wiadomosc
+    init(message: String) {
+        self.message = message
         
         super.init()
     }
     
     override func main() {
         sleep(1)
-        print("\(wiadomosc) -> Glowny watek: \(Thread.isMainThread)");
+        print("\(message) -> Główny wątek: \(Thread.isMainThread)");
     }
 }
 
 //: Tworzymy operacje
-let prostaOperacjaAdam   = ProstaOperacja.init(wiadomosc: "Adam")
-let prostaOperacjaBabie  = ProstaOperacja.init(wiadomosc: "Babie")
-let prostaOperacjaCebule = ProstaOperacja.init(wiadomosc: "Cebule")
-let prostaOperacjaDaje   = ProstaOperacja.init(wiadomosc: "Daje")
+let simpleOperationAdam   = SimpleOperation.init(message: "Adam")
+let simpleOperationBabie  = SimpleOperation.init(message: "Babie")
+let simpleOperationCebule = SimpleOperation.init(message: "Cebule")
+let simpleOperationDaje   = SimpleOperation.init(message: "Daje")
 
-//: Tworzymy kolejke
+//: Tworzymy kolejkę
 let kolejka2 = OperationQueue()
 kolejka2.maxConcurrentOperationCount = 1
 
-xtimeBlock("Dodane wlasne operacje") {
-    kolejka2.addOperation(prostaOperacjaAdam)
-    kolejka2.addOperation(prostaOperacjaBabie)
-    kolejka2.addOperation(prostaOperacjaCebule)
-    kolejka2.addOperation(prostaOperacjaDaje)
+xtimeBlock("Dodane własne operacje") {
+    kolejka2.addOperation(simpleOperationAdam)
+    kolejka2.addOperation(simpleOperationBabie)
+    kolejka2.addOperation(simpleOperationCebule)
+    kolejka2.addOperation(simpleOperationDaje)
 
     kolejka2.waitUntilAllOperationsAreFinished()
 }
 
 //: ## Wywołanie Operacji Na Głównym Wątku
-xtimeBlock("Wracamy do glownego watku") {
+xtimeBlock("Wracamy do głównego wątku") {
     
     OperationQueue.main.addOperation {
-        print("Halo! Czy to główny wątek? Glowny watek: \(Thread.isMainThread)")
+        print("Halo! Czy to główny wątek? Główny wątek: \(Thread.isMainThread)")
     }
 }
 

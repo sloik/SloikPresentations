@@ -14,13 +14,13 @@ std::vector<std::thread> createThreads() {
     
     for (int i = 0; i < 20; ++i) {
         
-        // dodajemy lambdy z praca do wykonania na watku
-        functionThreads.emplace_back([&]{ // co sie stanie jak zlapiemy zmienna przez referencje
-            // usypiamy watek na chwilunie
+        // dodajemy lambdy z pracą do wykonania na wątku
+        functionThreads.emplace_back([&]{ // co się stanie jak złapiemy zmienną przez referencję
+            // usypiamy wątek na chwilunię
             std::this_thread::sleep_for(std::chrono::milliseconds(10 * i));
             
-            // zadanie jakie chcemy wykonac
-            std::cout << "z watku: " << i << std::endl;
+            // zadanie jakie chcemy wykonać
+            std::cout << "z wątku: " << i << std::endl;
         });
     }
     
@@ -32,7 +32,7 @@ int main(int argc, const char * argv[]) {
 
     std::vector<std::thread> threads = createThreads();
         
-    // laczymy wszystkie wystartowane watki
+    // łączymy wszystkie wystartowane wątki
     for (auto &thread : threads) { thread.join(); }
     
     return 0;
@@ -41,10 +41,10 @@ int main(int argc, const char * argv[]) {
 
 /*
  
- W czasie tworzenia wątku łapiemy referencje która żyje na stosie. W momencie
+ W czasie tworzenia wątku łapiemy referencję, która żyje na stosie. W momencie
  gdy funkcja wraca to wszystko co było w tamtym miejscu jest nadpisane kolejnymi
  wywołaniami. Natomiast dalej mamy zachowaną referencję do tamtego adresu.
  
- Programowanie wielowatkowe jest jak fizyka kwantowa.
+ Programowanie wielowątkowe jest jak fizyka kwantowa.
  
 */

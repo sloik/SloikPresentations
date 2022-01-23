@@ -7,16 +7,16 @@ import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-class Dodawanie: Operation {
+class Adding: Operation {
     
-    var liczbaA: Int
-    var liczbaB: Int
-    private var wynik: Int = 0
-    var wynikResult: ((Int) -> ())?
+    var numberA: Int
+    var numberB: Int
+    private var result: Int = 0
+    var finalResult: ((Int) -> ())?
     
     init(a: Int, b: Int) {
-        liczbaA = a
-        liczbaB = b
+        numberA = a
+        numberB = b
         
         super.init()
     }
@@ -35,30 +35,30 @@ class Dodawanie: Operation {
         
         print("Dodawanie: Po drzemce")
 
-        wynik = liczbaA + liczbaB
-        wynikResult?(wynik)
+        result = numberA + numberB
+        finalResult?(result)
     }
 }
 
 xtimeBlock("Po prostu biegniemy") {
-    let op1 = Dodawanie.init(a: 2, b: 4)
+    let op1 = Adding.init(a: 2, b: 4)
     
-    op1.wynikResult = { wynik in
-        print("Po prostu biegniemy: \(wynik)")
+    op1.finalResult = { result in
+        print("Po prostu biegniemy: \(result)")
     }
     
     op1.start()
 }
 
-//: Nic nadzwyczajnego. Dokładnie to czego bysmy się spodziewali. Liczby zostały dodane a w bloku dostajemy sume.
+//: Nic nadzwyczajnego. Dokładnie to czego byśmy się spodziewali. Liczby zostały dodane a w bloku dostajemy sume.
 
 //: Zobaczmy teraz co się stanie jak takie zadanie zostanie natychmiast anulowane.
 
 xtimeBlock("Natychmiast anulujemy") {
-    let op1 = Dodawanie.init(a: 2, b: 8)
+    let op1 = Adding.init(a: 2, b: 8)
     
-    op1.wynikResult = { wynik in
-        print("Natychmiast anulujemy: \(wynik)")
+    op1.finalResult = { result in
+        print("Natychmiast anulujemy: \(result)")
     }
     
     op1.cancel()
@@ -68,7 +68,7 @@ xtimeBlock("Natychmiast anulujemy") {
 
 //: Wywołanie metody **cancel** zmienia tylko wartośc property **isCanceled**.
 //:
-//: Aby anulowanie operacji zadziałało parawidłowo (czyli faktycznie ja anulowało) to musimy w implementacji metody main (lub w tej metodzie gdzie lwia czesc pracy sie wykonuje) sprawdzac stan wlasciwowsci **isCancelled**. Jezeli mamy więcej takich części które wykonują dużo pracy to możemy (powinniśmy) dodać takie sprawdzenie przed (lub w trakcie zbierając cząstkowe wyniki) jej rozpoczęciem.
+//: Aby anulowanie operacji zadziałało parawidłowo (czyli faktycznie ja anulowało) to musimy w implementacji metody main (lub w tej metodzie gdzie lwia część pracy się wykonuje) sprawdzać stan wlaściwości **isCancelled**. Jeżeli mamy więcej takich części które wykonują dużo pracy to możemy (powinniśmy) dodać takie sprawdzenie przed (lub w trakcie zbierając cząstkowe wyniki) jej rozpoczęciem.
 
 
 //: [Wstecz](@previous) | [Następna strona](@next)

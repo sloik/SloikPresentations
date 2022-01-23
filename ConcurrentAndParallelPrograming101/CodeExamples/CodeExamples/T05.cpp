@@ -8,9 +8,9 @@
  
  Data Race
  
- Warunki do powstania: 
-    - chociaz 2 watki dziela ten sam fragment pamieci np. zmienna
-    - chociaz 1 z nich zmienia wartosc tej zmiennej
+ Warunki do powstania:
+    - chociaż 2 wątki dzielą ten sam fragment pamięci np. zmienna
+    - chociaż 1 z nich zmienia wartość tej zmiennej
  
  */
 
@@ -21,16 +21,16 @@ void setNewBalance(int ammount, int *pBalance) {
 
 int main(int argc, const char * argv[]) {
     
-    int balance = 0; // wspoldzielony zasob
+    int balance = 0; // współdzielony zasób
 
-    std::vector<std::thread> threads; // trzymamy watki tutaj
+    std::vector<std::thread> threads; // trzymamy wątki tutaj
     
     for (int i = 0; i < 1000; ++i) {
         
-        // dodajemy lambdy z praca do wykonania na watku
+        // dodajemy lambdy z pracą do wykonania na wątku
         threads.emplace_back([&] {
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(random()%100)); // szczypta losowosci
+            std::this_thread::sleep_for(std::chrono::milliseconds(random()%100)); // szczypta losowości
 
             setNewBalance(100, &balance);
 
@@ -40,7 +40,7 @@ int main(int argc, const char * argv[]) {
         });
     }
     
-    // laczymy wszystkie wystartowane watki
+    // łączymy wszystkie wystartowane wątki
     for (auto &thread : threads) { thread.join(); }
     
     std::cout << "Stan konta po: " << balance << std::endl << std::endl;
