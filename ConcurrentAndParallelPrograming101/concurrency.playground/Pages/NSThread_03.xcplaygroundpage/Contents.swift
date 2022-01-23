@@ -7,7 +7,7 @@ import Foundation
 
 final class Test: NSObject {
     @objc func jobToDo() {
-        print("Glowny watek: \(Thread.isMainThread)")
+        print("Główny wątek: \(Thread.isMainThread)")
     }
 }
 

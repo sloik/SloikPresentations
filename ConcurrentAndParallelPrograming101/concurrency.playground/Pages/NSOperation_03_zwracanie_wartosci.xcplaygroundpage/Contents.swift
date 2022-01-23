@@ -4,47 +4,47 @@
  */
 import Foundation
 
-class Dodawanie: Operation {
+class Adding: Operation {
     
-    var liczbaA: Int
-    var liczbaB: Int
-    var wynik: Int = 0
-    var wynikResult: ((_ wynik: Int) -> ())?
+    var numberA: Int
+    var numberB: Int
+    var result: Int = 0
+    var finalResult: ((_ result: Int) -> ())?
     
     init(a: Int, b: Int) {
-        liczbaA = a
-        liczbaB = b
+        numberA = a
+        numberB = b
         
         super.init()
     }
     
     override func main() {
         sleep(1)
-        wynik = liczbaA + liczbaB
+        result = numberA + numberB
         
-        wynikResult?(wynik)
+        finalResult?(result)
     }
 }
 
 xtimeBlock("Prosta Operacja Dodawania") {
-    let op1 = Dodawanie.init(a: 2, b: 4)
-    let op2 = Dodawanie.init(a: 3, b: 6)
+    let op1 = Adding.init(a: 2, b: 4)
+    let op2 = Adding.init(a: 3, b: 6)
     
-    op1.wynikResult = { wynik in
-        print("Wynikiem operacji jest: \(wynik)")
+    op1.finalResult = { result in
+        print("Wynikiem operacji jest: \(result)")
     }
     
     op1.completionBlock = { [unowned op1] in
-        print("CompletionBlock: \(op1.wynik)")
+        print("CompletionBlock: \(op1.result)")
     }
     
     op1.start()
     op2.start()
     
-    print("Wynikami operacji są: \(op1.wynik), \(op2.wynik)")
+    print("Wynikami operacji są: \(op1.result), \(op2.result)")
 }
 
-//: Nie ma żadnych ograniczeń co do sposobu zwracania wartości z wykonywanej operacji. Tak więc możemy korzystać ze notyfikacji, KVO, delegacji czy też jak w przykładzie bloków i zmiennej która będzie przechowywać wynik.
+//: Nie ma żadnych ograniczeń co do sposobu zwracania wartości z wykonywanej operacji. Tak więc możemy korzystać z notyfikacji, KVO, delegacji czy też jak w przykładzie bloków i zmiennej która będzie przechowywać wynik.
 
 
 //: [Wstecz](@previous) | [Następna strona](@next)

@@ -20,8 +20,8 @@ for thread in threads {
     thread.start()
 }
 
-print("               Glowny watek: \(Thread.isMainThread)")
-print("Aplikacja jest wielowatkowa: \(Thread.isMultiThreaded())")
+print("               Główny wątek: \(Thread.isMainThread)")
+print("Aplikacja jest wielowątkowa: \(Thread.isMultiThreaded())")
 
 
 //: [Wstecz](@previous) | [Następna strona](@next)
