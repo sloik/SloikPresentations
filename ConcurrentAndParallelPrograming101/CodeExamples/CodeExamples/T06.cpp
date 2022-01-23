@@ -16,9 +16,9 @@ void setNewBalance(int ammount, int *pBalance) {
 
 int main(int argc, const char * argv[]) {
     
-    int balance = 0; // wspoldzielony zasob
+    int balance = 0; // współdzielony zasób
     
-    std::vector<std::thread> threads; // trzymamy watki tutaj
+    std::vector<std::thread> threads; // trzymamy wątki tutaj
     
     std::mutex _mutex;
     
@@ -27,7 +27,7 @@ int main(int argc, const char * argv[]) {
     
     for (int i = 0; i < 10000; ++i) {
         
-        // dodajemy lambdy z praca do wykonania na watku
+        // dodajemy lambdy z pracą do wykonania na wątku
         threads.emplace_back([&] {
             
             _mutex.lock(); // -- start krytycznej sekcji kodu ---
@@ -37,9 +37,9 @@ int main(int argc, const char * argv[]) {
             _mutex.unlock(); // -- stop krytycznej sekcji kodu --
             
             
-            // wyobrazmy sobie ze tutaj wykonuje sie inna praca ale nie korzystajaca
-            // ze wspolnego zasobu
-            std::this_thread::sleep_for(std::chrono::milliseconds(random()%100)); // szczypta losowosci
+            // wyobraźmy sobie że tutaj wykonuje się inna praca ale nie korzystająca
+            // ze wspólnego zasobu
+            std::this_thread::sleep_for(std::chrono::milliseconds(random()%100)); // szczypta losowości
 
             
             _mutex.lock(); // -- start krytycznej sekcji kodu ---
@@ -50,7 +50,7 @@ int main(int argc, const char * argv[]) {
         });
     }
     
-    // laczymy wszystkie wystartowane watki
+    // łączymy wszystkie wystartowane wątki
     for (auto &thread : threads) { thread.join(); }
     
     

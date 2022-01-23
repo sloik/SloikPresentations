@@ -11,16 +11,16 @@ void thread2() {
 }
 
 ///
-/// Kolejność wypisywanych komunikatów jest nie deterministryczna.
+/// Kolejność wypisywanych komunikatów jest nie deterministyczna.
 /// Wystarczy uruchomić przykład kilka razy.
 ///
 int main(int argc, const char * argv[]) {
 
-    // Tworzymy nowy watek
-    std::thread t1(thread1); // w tym momencie zostal utworozny nowy watek
-    std::thread t2(thread2); // i tutaj tez!
+    // Tworzymy nowy wątek
+    std::thread t1(thread1); // w tym momencie został utworzony nowy wątek
+    std::thread t2(thread2); // i tutaj też!
     
-    // Wypisujemy z watku
+    // Wypisujemy z wątku
     std::cout << "0000000000000000000000000000000000000000\n";
 
     std::cout << "Waiting for end\n";
