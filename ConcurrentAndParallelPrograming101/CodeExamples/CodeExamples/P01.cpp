@@ -10,14 +10,14 @@ int main(int argc, const char * argv[]) {
     
     std::cout << "Rodzic:      getpid -> " << ::getpid() << " (parent -> " << ::getppid() << ")" << std::endl << std::endl;
 
-    // N- -- "ujemne" gdy wystapil blad
+    // N- -- "ujemne" gdy wystąpił błąd
     // 0  -- proces potomny
     // N+ -- ID procesu potomnego do wykorzystania przez proces rodzica
     pid_t pid = fork();
     
     // error
     if (pid < 0) {
-        perror("Nie udalo sie wywolac fork()");
+        perror("Nie udało się wywołać fork()");
         exit(-1);
     }
     
@@ -34,7 +34,7 @@ int main(int argc, const char * argv[]) {
     else {
         std::cout << "Rodzic: PID dziecka -> " << pid << std::endl << std::endl;
         
-        // czekamy w nieskonczonosc az wszystkie procesy sie zakoncza
+        // czekamy w nieskończoność aż wszystkie procesy się zakończą
         wait(0);
     }
     
