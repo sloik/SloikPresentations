@@ -18,7 +18,7 @@ int main(int argc, const char * argv[]) {
     for (int i = 0; i < 9; ++i) {
         
         // dodajemy lambdy z pracą do wykonania na wątku
-        threads.emplace_back([&i]{ // <-- referencja do licznika
+        threads.emplace_back([&i]{ // <-- referencja do licznika / [i] <-- złpałoby kopie
             
             // usypiamy wątek na chwilunię
             std::this_thread::sleep_for(std::chrono::milliseconds(10 * i));
