@@ -9,17 +9,19 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
 //: Dodajemy protokól.
 
-protocol GoracyZiemniak {
-    var licznik: Int? { get }
+import Foundation
+
+protocol HotPotato {
+    var counter: Int? { get }
 }
 
-class PrzepisKrok: Operation, GoracyZiemniak {
-    let krok:String
+class RecipeStep: Operation, HotPotato {
+    let step: String
     
-    var licznik: Int? // operacja implementuje protokol
+    var counter: Int? // operacja implementuje protokół
     
-    init(krok: String) {
-        self.krok = krok
+    init(step: String) {
+        self.step = step
         super.init()
     }
     
@@ -27,63 +29,63 @@ class PrzepisKrok: Operation, GoracyZiemniak {
         sleep(1)
         
         // Każda operacja ma właściwość **dependencies** w której są zawarte zależne operacje.
-        if let przekazanaWartosc = dependencies
-            .filter({$0 is GoracyZiemniak}) // sprawdzamy czy zaleznosc implementuje protokol
-            .first as? GoracyZiemniak {     // bierzemy pierwsza ktora to robi (wiemy ze bedzie jedna bo sami ja ustawiamy)
-            licznik = przekazanaWartosc.licznik
+        if let passedValue = dependencies
+            .filter({$0 is HotPotato}) // sprawdzamy czy zależność implementuje protokół
+            .first as? HotPotato {     // bierzemy pierwszą ktora to robi (wiemy że będzie jedna bo sami ją ustawiamy)
+            counter = passedValue.counter
         }
         
-        if let licznik = licznik {
-            self.licznik! += 1
-            print("\(licznik) \(krok) -> Glowny watek: \(Thread.isMainThread)");
+        if let counter = counter {
+            self.counter! += 1
+            print("\(counter) \(step) -> Główny wątek: \(Thread.isMainThread)");
         }
         else {
-            self.licznik = 1; // nie bylo wartosci to juz jest
-            print("\(krok) -> Glowny watek: \(Thread.isMainThread)");
+            self.counter = 1; // nie było wartościto już jest
+            print("\(step) -> Główny wątek: \(Thread.isMainThread)");
         }
     }
 }
 
-class Pieczenie: AsyncOperation, GoracyZiemniak {
+class Baking: AsyncOperation, HotPotato {
     
-    var licznik: Int? // operacja implementuje protokol
+    var counter: Int? // operacja implementuje protokół
     
     override func main() {
-        let watek = Thread.init {
+        let thread = Thread.init {
             sleep(5)
             
             // Każda operacja ma właściwość **dependencies** w której są zawarte zależne operacje.
-            if let przekazanaWartosc = self.dependencies
-                .filter({$0 is GoracyZiemniak}) // sprawdzamy czy zaleznosc implementuje protokol
-                .first as? GoracyZiemniak {     // bierzemy pierwsza ktora to robi (wiemy ze bedzie jedna bo sami ja ustawiamy)
-                self.licznik = przekazanaWartosc.licznik
+            if let passedValue = self.dependencies
+                .filter({$0 is HotPotato}) // sprawdzamy czy zależność implementuje protokół
+                .first as? HotPotato {     // bierzemy pierwszą ktora to robi (wiemy że będzie jedna bo sami ją ustawiamy)
+                self.counter = passedValue.counter
             }
             
-            print("Ciasto upieczone -> Glowny watek: \(Thread.isMainThread)")
+            print("Ciasto upieczone -> Główny wątek: \(Thread.isMainThread)")
             
-            if let _ = self.licznik {
-                self.licznik! += 1
+            if let _ = self.counter {
+                self.counter! += 1
             }
             
             self.state = .Finished
         }
         
-        watek.start()
+        thread.start()
     }
 }
 
 //: Tworzymy Zadania
 
-let dodajJajka    = PrzepisKrok.init(krok: "dodaj jajka")
-dodajJajka.licznik = 1
+let addEggs    = RecipeStep.init(step: "dodaj jajka")
+addEggs.counter = 1
 
-let dodajMleko    = PrzepisKrok.init(krok: "dodaj mleko")
-let dodajMake     = PrzepisKrok.init(krok: "dodaj make")
-let mieszajCiasto = PrzepisKrok.init(krok: "mieszaj ciasto")
-let piecz         = Pieczenie()
-let podajCiasto   = PrzepisKrok.init(krok: "podaj ciasto")
+let addMilk    = RecipeStep.init(step: "dodaj mleko")
+let addFlour   = RecipeStep.init(step: "dodaj mąkę")
+let mixDough   = RecipeStep.init(step: "mieszaj ciasto")
+let bake         = Baking()
+let serveCake  = RecipeStep.init(step: "podaj ciasto")
 
-let wszystkieOperacje = [podajCiasto, piecz, mieszajCiasto, dodajMake, dodajMleko, dodajJajka]
+let allOperations = [serveCake, bake, mixDough, addFlour, addMilk, addEggs]
 
 precedencegroup Additive {
     associativity: left
@@ -94,12 +96,11 @@ func |>(lhs: Operation, rhs: Operation) -> Operation {
     return rhs
 }
 
-dodajJajka |> dodajMleko |> dodajMake |> mieszajCiasto |> piecz |> podajCiasto
+addEggs |> addMilk |> addFlour |> mixDough |> bake |> serveCake
 
-let koljka = OperationQueue()
-koljka.maxConcurrentOperationCount = 1 // sprawdz co sie stanie jak zwiekszysz ta liczbe
+let queue = OperationQueue()
+queue.maxConcurrentOperationCount = 1 // sprawdź co się stanie jak zwiększysz tą liczbę
 
-koljka.addOperations(wszystkieOperacje, waitUntilFinished: false)
-
+queue.addOperations(allOperations, waitUntilFinished: false)
 
 //: [Wstecz](@previous) | [Następna strona](@next)

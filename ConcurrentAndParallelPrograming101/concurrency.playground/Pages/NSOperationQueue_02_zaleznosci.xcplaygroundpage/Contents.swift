@@ -7,54 +7,54 @@ import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-//: Czasami zachodzi potrzeba aby jakieś zadanie wykonało się przed innym (w pierwszej kolejności musimy zmieszać ciasto a potem wsadzamy je do piekarnika). Korzystając z kolejek operacji możemy ustawić zależności po między jej poszczególnymi zadaniami. Co więcej przy odrobinie przebiegłości możemy też przekazywać wynik jednej operacji bezpośrednio do drugiej.
+//: Czasami zachodzi potrzeba aby jakieś zadanie wykonało się przed innym (w pierwszej kolejności musimy zmieszać ciasto a potem wsadzamy je do piekarnika). Korzystając z kolejek operacji możemy ustawić zależności pomiędzy jej poszczególnymi zadaniami. Co więcej przy odrobinie przebiegłości możemy też przekazywać wynik jednej operacji bezpośrednio do drugiej.
 
-class PrzepisKrok: Operation {
-    let krok:String
+class RecipeStep: Operation {
+    let step: String
     
-    init(krok: String) {
-        self.krok = krok
+    init(step: String) {
+        self.step = step
         super.init()
     }
     
     override func main() {
         sleep(1)
 
-        print("\(krok) -> Glowny watek: \(Thread.isMainThread)");
+        print("\(step) -> Główny wątek: \(Thread.isMainThread)");
     }
 }
 
-class Pieczenie: AsyncOperation {
+class Baking: AsyncOperation {
     override func main() {
-        let watek = Thread.init {
+        let thread = Thread.init {
             sleep(5)
-            print("Ciasto upieczone -> Glowny watek: \(Thread.isMainThread)")
+            print("Ciasto upieczone -> Główny wątek: \(Thread.isMainThread)")
             
             self.state = .Finished
         }
         
-        watek.start()
+        thread.start()
     }
 }
 
 //: Tworzymy Zadania
-let dodajJajka    = PrzepisKrok.init(krok: "dodaj jajka")
-let dodajMleko    = PrzepisKrok.init(krok: "dodaj mleko")
-let dodajMake     = PrzepisKrok.init(krok: "dodaj make")
-let mieszajCiasto = PrzepisKrok.init(krok: "mieszaj ciasto")
-let piecz         = Pieczenie()
-let podajCiasto   = PrzepisKrok.init(krok: "podaj ciasto")
-//: Dodajemy zleżności
-xtimeBlock("Definiowanie zaleznosci \"recznie\"") {
-    dodajMleko.addDependency(dodajJajka)
-    dodajMake.addDependency(dodajMleko)
+let addEggs    = RecipeStep.init(step: "dodaj jajka")
+let addMilk    = RecipeStep.init(step: "dodaj mleko")
+let addFlour   = RecipeStep.init(step: "dodaj mąkę")
+let mixDough   = RecipeStep.init(step: "mieszaj ciasto")
+let bake       = Baking()
+let serveCake  = RecipeStep.init(step: "podaj ciasto")
+//: Dodajemy zależności
+xtimeBlock("Definiowanie zależności \"ręcznie\"") {
+    addMilk.addDependency(addEggs)
+    addFlour.addDependency(addMilk)
 
-//    mieszajCiasto.addDependency(dodajJajka)
-//    mieszajCiasto.addDependency(dodajMleko)
+//    mixDough.addDependency(addEggs)
+//    mixDough.addDependency(addMilk)
 
-    mieszajCiasto.addDependency(dodajMake)
-    piecz.addDependency(mieszajCiasto)
-    podajCiasto.addDependency(piecz)
+    mixDough.addDependency(addFlour)
+    bake.addDependency(mixDough)
+    serveCake.addDependency(bake)
 }
 //: Można też na sterydach to zrobić...
 precedencegroup Additive {
@@ -66,18 +66,18 @@ func |>(lhs: Operation, rhs: Operation) -> Operation {
     return rhs
 }
 
-xtimeBlock("Zaleznosci dodane wlasnym operatorem") {
-     dodajJajka |> dodajMleko |> dodajMake |> mieszajCiasto |> piecz |> podajCiasto
+xtimeBlock("Zależności dodane własnym operatorem") {
+     addEggs |> addMilk |> addFlour |> mixDough |> bake |> serveCake
 }
 
-let koljka = OperationQueue()
-koljka.maxConcurrentOperationCount = 10 // mozna pobawic sie iloscia
+let queue = OperationQueue()
+queue.maxConcurrentOperationCount = 10 // mozna pobawic sie ilością
 
 timeBlock("start wszystkich operacji") {
     
-    let wszystkieOperacje = [podajCiasto, piecz, mieszajCiasto, dodajMake, dodajMleko, dodajJajka]
+    let allOperations = [serveCake, bake, mixDough, addFlour, addMilk, addEggs]
 
-    koljka.addOperations(wszystkieOperacje, waitUntilFinished: false)
+    queue.addOperations(allOperations, waitUntilFinished: false)
 }
 
 

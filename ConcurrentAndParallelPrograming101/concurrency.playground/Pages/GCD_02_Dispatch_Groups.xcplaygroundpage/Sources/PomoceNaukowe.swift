@@ -1,23 +1,23 @@
 import Foundation
 
-public class Asynchroniczny {
+public class Asynchronous {
     
     public init() {}
     
-    public func zobaczCoSieStanie(callback: @escaping ()->()) {
+    public func checkWhatWillHappen(callback: @escaping ()->()) {
         
-        let systemowaKolejka = DispatchQueue.global(qos: .background)
+        let systemQueue = DispatchQueue.global(qos: .background)
         
-        print("Asynchroniczna: raz (stary watek)")
+        print("Asynchroniczna: raz (stary wątek)")
       
-        systemowaKolejka.async {
-            print("Super dlugie zadanie start...")
+        systemQueue.async {
+            print("Super długie zadanie start...")
             sleep(5)
-            print("Super dlugie zadanie stop...")
+            print("Super długie zadanie stop...")
             sleep(5)
             callback()
         }
         
-        print("Asynchroniczna: dwa (stary watek)")
+        print("Asynchroniczna: dwa (stary wątek)")
     }
 }

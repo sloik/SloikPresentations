@@ -8,7 +8,7 @@ import PlaygroundSupport
 PlaygroundPage.current.needsIndefiniteExecution = true
 
 //: Koncepcyjnie możemy myśleć o **OperationQueue** jak o *liście zadań do wykonania*. Pewne zadania możemy wykonywać jednocześnie z innymi. Inne będziemy mogli wykonać tylko jeżeli wcześniej zakończyliśmy jeszcze jakieś inne zadanie. Możemy kogoś powiadomić o wykonaniu zadań jak również możemy dorzucać zadania i je anulować.
-//: Z technicznego punktu widzenia NSOperationQueue jest instancją klasy NSOperationQueue, która umożliwia nam te rzeczy wpsomniane wczesniej.
+//: Z technicznego punktu widzenia NSOperationQueue jest instancją klasy NSOperationQueue, która umożliwia nam te rzeczy wspomniane wczesniej.
 
 
 let queue = OperationQueue()
@@ -51,16 +51,16 @@ let simpleOperationCebule = SimpleOperation.init(message: "Cebule")
 let simpleOperationDaje   = SimpleOperation.init(message: "Daje")
 
 //: Tworzymy kolejkę
-let kolejka2 = OperationQueue()
-kolejka2.maxConcurrentOperationCount = 1
+let queue2 = OperationQueue()
+queue2.maxConcurrentOperationCount = 1
 
 xtimeBlock("Dodane własne operacje") {
-    kolejka2.addOperation(simpleOperationAdam)
-    kolejka2.addOperation(simpleOperationBabie)
-    kolejka2.addOperation(simpleOperationCebule)
-    kolejka2.addOperation(simpleOperationDaje)
+    queue2.addOperation(simpleOperationAdam)
+    queue2.addOperation(simpleOperationBabie)
+    queue2.addOperation(simpleOperationCebule)
+    queue2.addOperation(simpleOperationDaje)
 
-    kolejka2.waitUntilAllOperationsAreFinished()
+    queue2.waitUntilAllOperationsAreFinished()
 }
 
 //: ## Wywołanie Operacji Na Głównym Wątku
