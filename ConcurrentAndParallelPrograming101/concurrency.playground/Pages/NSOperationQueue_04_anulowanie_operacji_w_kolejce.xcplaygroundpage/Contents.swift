@@ -7,11 +7,11 @@ import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-class PrzepisKrok: Operation {
-    let krok:String
+class RecipeStep: Operation {
+    let step: String
     
-    init(krok: String) {
-        self.krok = krok
+    init(step: String) {
+        self.step = step
         super.init()
     }
     
@@ -22,38 +22,38 @@ class PrzepisKrok: Operation {
             return
         }
         
-        print("\(krok) -> Glowny watek: \(Thread.isMainThread)");
+        print("\(step) -> Główny wątek: \(Thread.isMainThread)");
     }
 }
 
-class Pieczenie: AsyncOperation {
+class Baking: AsyncOperation {
     override func main() {
-        let watek = Thread.init {
+        let thread = Thread.init {
             if self.isCancelled {
                 self.state = .Finished
                 return
             }
             
             sleep(5)
-            print("🔥 Ciasto upieczone -> Glowny watek: \(Thread.isMainThread)")
+            print("🔥 Ciasto upieczone -> Główny wątek: \(Thread.isMainThread)")
             
             self.state = .Finished
         }
         
-        watek.start()
+        thread.start()
     }
 }
 
 //: Tworzymy Zadania
 
-let dodajJajka    = PrzepisKrok.init(krok: "dodaj jajka")
-let dodajMleko    = PrzepisKrok.init(krok: "dodaj mleko")
-let dodajMake     = PrzepisKrok.init(krok: "dodaj make")
-let mieszajCiasto = PrzepisKrok.init(krok: "mieszaj ciasto")
-let piecz         = Pieczenie()
-let podajCiasto   = PrzepisKrok.init(krok: "🍰 PODAJ CIASTO")
+let addEggs    = RecipeStep.init(step: "dodaj jajka")
+let addMilk    = RecipeStep.init(step: "dodaj mleko")
+let addFlour   = RecipeStep.init(step: "dodaj mąkę")
+let mixDough   = RecipeStep.init(step: "mieszaj ciasto")
+let bake       = Baking()
+let serveCake   = RecipeStep.init(step: "🍰 PODAJ CIASTO")
 
-let wszystkieOperacje = [podajCiasto, piecz, mieszajCiasto, dodajMake, dodajMleko, dodajJajka]
+let allOperations = [serveCake, bake, mixDough, addFlour, addMilk, addEggs]
 
 
 precedencegroup Additive {
@@ -65,20 +65,19 @@ func |>(lhs: Operation, rhs: Operation) -> Operation {
     return rhs
 }
 
-dodajJajka |> dodajMleko |> dodajMake |> mieszajCiasto |> piecz |> podajCiasto
+addEggs |> addMilk |> addFlour |> mixDough |> bake |> serveCake
 
-let kolejka = OperationQueue()
-kolejka.maxConcurrentOperationCount = 5
+let queue = OperationQueue()
+queue.maxConcurrentOperationCount = 5
 
-kolejka.addOperations(wszystkieOperacje, waitUntilFinished: false)
+queue.addOperations(allOperations, waitUntilFinished: false)
 
-sleep(3) // dajemy czas aby cos sie wykonalo na kolejce
+sleep(3) // dajemy czas aby coś się wykonało na kolejce
 
-//: Tak anulujemy pojedyncze zadanie. Powinno wygladac znajomo juz do tego czasu.
-piecz.cancel()
+//: Tak anulujemy pojedyncze zadanie. Powinno wyglądać znajomo już do tego czasu.
+bake.cancel()
 
 //: Tak anulujemy wszystkie zadania w kolejce.
-kolejka.cancelAllOperations()
-
+queue.cancelAllOperations()
 
 //: [Wstecz](@previous) | [Następna strona](@next)

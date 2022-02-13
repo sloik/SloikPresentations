@@ -12,72 +12,72 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
 xtimeBlock("Problem") {
     
-    let grupaA = DispatchGroup()
+    let groupA = DispatchGroup()
 
-    let adres = Adres(ulica: "Szkolna", numer: "13");
-    print(adres.pelen)
+    let address = Address(street: "Szkolna", number: "13");
+    print(address.full)
     
-    adres.zmien(ulica: "Mokotowska", numer: "1")
-    print(adres.pelen)
+    address.change(street: "Mokotowska", number: "1")
+    print(address.full)
     
-    let rownoleglaKolejka = DispatchQueue(label: "Rownolegla Kolejka", attributes: .concurrent)
+    let concurrentQueue = DispatchQueue(label: "Równoległa Kolejka", attributes: .concurrent)
 
     
-    for (ulica, numer) in [("Szkolna", "13"), ("Sokołowska", "9"), ("Mokotowska", "1")] {
-        rownoleglaKolejka.async(group: grupaA) {
-            adres.zmien(ulica: ulica, numer: numer)
-            print("Zmieniono na: \(adres.pelen)")
+    for (street, number) in [("Szkolna", "13"), ("Sokołowska", "9"), ("Mokotowska", "1")] {
+        concurrentQueue.async(group: groupA) {
+            address.change(street: street, number: number)
+            print("Zmieniono na: \(address.full)")
         }
     }
     
-    grupaA.wait()
-    print("\nOstatecznie: \(adres.pelen)")
+    groupA.wait()
+    print("\nOstatecznie: \(address.full)")
 }
 
 
-//: **Bariera** działa tak że pozwala dokończyć działanie wszystkim zdaniom, które już wystartowały. Jednocześnie blokuje wystartowanie zadań, które zostały dodane po barierze. De facto zmieniając kolejkę ze współbieżnej na seryjną (na czas wykonania tego zadania). 
+//: **Bariera** działa tak że pozwala dokończyć działanie wszystkim zdaniom, które już wystartowały. Jednocześnie blokuje wystartowanie zadań, które zostały dodane po barierze. De facto zmieniając kolejkę ze współbieżnej na seryjną (na czas wykonania tego zadania).
 //: Wprowadzając odrobinę kreatywnej księgowości możemy zaimplementować takiego zwierza który pozwala czytać z wielu wątków a gdy nadchodzi czas zapisu to wszystkie inne wątki są blokowane. [Multiple Readers Single Writer](https://www.objc.io/issues/2-concurrency/low-level-concurrency-apis/#multiple-readers-single-writer)
 
-xtimeBlock("Rozwiazanie") {
+xtimeBlock("Rozwiązanie") {
     
-    class BezpiecznyAdres: Adres {
-        let izolatka = DispatchQueue(label: "Izolatka", attributes: .concurrent)
+    class SafeAddress: Address {
+        let isolation = DispatchQueue(label: "Izolatka", attributes: .concurrent)
         
         
-        override open func zmien(ulica: String, numer: String) {
+        override open func change(street: String, number: String) {
 //: Tworzenie Bariery
-            izolatka.async(flags: .barrier) { // nowa składnia uwaga!
-                super.zmien(ulica: ulica, numer: numer)
+            isolation.async(flags: .barrier) { // nowa składnia uwaga!
+                super.change(street: street, number: number)
             }
         }
         
-        override open var pelen: String {
-            var wynik = ""
+        override open var full: String {
+            var result = ""
             
-            izolatka.sync { // musimy użyc synchronicznego wywolania
-                wynik = super.pelen
-                print("Wywolane z watku: \(Thread.current)")
+            isolation.sync { // musimy użyc synchronicznego wywołania
+                result = super.full
+                print("Wywołane z wątku: \(Thread.current)")
             }
             
-            return wynik
+            return result
         }
     }
     
-    let grupaA = DispatchGroup()
+    let groupA = DispatchGroup()
     
-    let adres = BezpiecznyAdres(ulica: "Szkolna", numer: "13");
+    let address = SafeAddress(street: "Szkolna", number: "13");
     
-    let rownoleglaKolejka = DispatchQueue(label: "Rownolegla Kolejka", attributes: .concurrent)
+    let concurrentQueue = DispatchQueue(label: "Równoległa Kolejka", attributes: .concurrent)
     
-    for (ulica, numer) in [("Szkolna", "13"), ("Sokołowska", "9"), ("Gnojna", "32"), ("Wiejska", "42"), ("Mokotowska", "1")] {
-        rownoleglaKolejka.async(group: grupaA) {
-            adres.zmien(ulica: ulica, numer: numer)
-            print("Zmieniono na: \(adres.pelen) - - - > Wywolane z watku: \(Thread.current)")
+    for (street, number) in [("Szkolna", "13"), ("Sokołowska", "9"), ("Gnojna", "32"), ("Wiejska", "42"), ("Mokotowska", "1")] {
+        concurrentQueue.async(group: groupA) {
+            address.change(street: street, number: number)
+            print("Zmieniono na: \(address.full) - - - > Wywołane z wątku: \(Thread.current)")
         }
     }
     
-    grupaA.wait()
-    print("\nOstatecznie: \(adres.pelen)")
+    groupA.wait()
+    print("\nOstatecznie: \(address.full)")
 }
 
 PlaygroundPage.current.finishExecution()

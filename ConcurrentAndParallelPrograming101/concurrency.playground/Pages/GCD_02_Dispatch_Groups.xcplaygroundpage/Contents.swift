@@ -8,39 +8,39 @@ import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-//: Sprawdzanie zakończenia pojedyńczego tasku jest banalnie proste (wystarczy dodać taką informaje na koniec wrzuconego bloku i gotowe). Co w sytuacji gdy mamy tych zadań dużo i chcemy się dowiedzieć gdy wszystkie się zakończą? Całe szczęście z pomocą nadchodzą grupy :)
+//: Sprawdzanie zakończenia pojedynczego tasku jest banalnie proste (wystarczy dodać taką informacje na koniec wrzuconego bloku i gotowe). Co w sytuacji gdy mamy tych zadań dużo i chcemy się dowiedzieć gdy wszystkie się zakończą? Całe szczęście z pomocą nadchodzą grupy :)
 //: ## Tworzymy Grupe
-let grupaA = DispatchGroup()
+let groupA = DispatchGroup()
 
 //: Świetnie nam idzie. Zrobmy jeszcze jedna.
 
-let grupaB = DispatchGroup()
+let groupB = DispatchGroup()
 
-//: Potrzebujemy kolejki na ktorej bedziemy uruchamiac nazsze zadania
-let systemowaKolejka = DispatchQueue.global(qos: .background)
-let seryjnaKolejka   = DispatchQueue.init(label: "Seryjne Kolejka1")
+//: Potrzebujemy kolejki na której będziemy uruchamiac nazsze zadania
+let systemQueue = DispatchQueue.global(qos: .background)
+let serialQueue   = DispatchQueue.init(label: "Seryjne Kolejka1")
 
-//: ## Notyfikaca o Zakonczeniu Wszystkich Zadan w Grupie
-//: Zadania w grupie moga się znajdować w roznych kolejkach.
+//: ## Notyfikacja o Zakończeniu Wszystkich Zadań w Grupie
+//: Zadania w grupie mogą się znajdować w różnych kolejkach.
 
-xtimeBlock("Wszystkie Zadania Skonczone") {
+xtimeBlock("Wszystkie Zadania Skończone") {
     
-    systemowaKolejka.async(group: grupaA) {
-        print("To żyje 1 -> Glowny watek: \(Thread.isMainThread)")
+    systemQueue.async(group: groupA) {
+        print("To żyje 1 -> Główny wątek: \(Thread.isMainThread)")
     }
     
-    seryjnaKolejka.async(group: grupaA) {
+    serialQueue.async(group: groupA) {
         sleep(3)
-        print("To żyje 2 -> Glowny watek: \(Thread.isMainThread)")
+        print("To żyje 2 -> Główny wątek: \(Thread.isMainThread)")
     }
     
-    grupaA.notify(queue: DispatchQueue.main) {
-        print("Na obu kolejkach robota skonczona :) -> Glowny watek: \(Thread.isMainThread)")
+    groupA.notify(queue: DispatchQueue.main) {
+        print("Na obu kolejkach robota skończona :) -> Główny wątek: \(Thread.isMainThread)")
     }
     
     print("\nPrzed czekaniem na grupe A")
-    grupaA.wait(timeout: DispatchTime.distantFuture)
-    print("Po czekaniu na grupe A")
+    groupA.wait(timeout: DispatchTime.distantFuture)
+    print("Po czekaniu na grupę A")
 }
 
 //: Dispatch Group Enter / Leave
@@ -48,34 +48,34 @@ xtimeBlock("Wszystkie Zadania Skonczone") {
 
 xtimeBlock("Problem Przy Asynchronicznych Metodach") {
     
-    systemowaKolejka.async(group: grupaA) {
-        Asynchroniczny().zobaczCoSieStanie {
+    systemQueue.async(group: groupA) {
+        Asynchronous().checkWhatWillHappen {
             DispatchQueue.main.async {
-                print("Robota Ogarnieta  -> Glowny watek: \(Thread.isMainThread)")
+                print("Robota Ogarnięta  -> Główny wątek: \(Thread.isMainThread)")
             }
         }
     }
     
-    grupaA.notify(queue: DispatchQueue.main) {
+    groupA.notify(queue: DispatchQueue.main) {
         print("Wszystkie zadania w grupie wykonane 💥")
     }
 }
 
-//: Rozwiązaniem jest "reczne" oznaczenie w którym momencie zadanie **wchodzi** do grupy i w którym **wychodzi**.
-xtimeBlock("Rozwiazanie Przy Asynchronicznych Metodach") {
+//: Rozwiązaniem jest "ręczne" oznaczenie w którym momencie zadanie **wchodzi** do grupy i w którym **wychodzi**.
+xtimeBlock("Rozwiązanie Przy Asynchronicznych Metodach") {
     
-    grupaA.enter()
-    systemowaKolejka.async {
-        Asynchroniczny().zobaczCoSieStanie {
+    groupA.enter()
+    systemQueue.async {
+        Asynchronous().checkWhatWillHappen {
             DispatchQueue.main.async {
-                print("Robota Ogarnieta  -> Glowny watek: \(Thread.isMainThread)")
+                print("Robota Ogarnięta  -> Główny wątek: \(Thread.isMainThread)")
             }
             
-            grupaA.leave()
+            groupA.leave()
         }
     }
     
-    grupaA.notify(queue: DispatchQueue.main) {
+    groupA.notify(queue: DispatchQueue.main) {
         print("Wszystkie zadania w grupie wykonane 😎")
     }
 }

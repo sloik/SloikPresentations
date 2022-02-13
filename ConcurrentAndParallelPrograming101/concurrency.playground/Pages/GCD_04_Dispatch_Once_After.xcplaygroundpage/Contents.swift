@@ -15,27 +15,27 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
 xtimeBlock("Tylko Raz") {
     
-    class TylkoRaz {
-        static var raz: () = {
+    class OnlyOnce {
+        static var once: () = {
             print("Akcja")
         }()
         
         func wtf() {
-            TylkoRaz.raz
+            OnlyOnce.once
         }
     }
     
     for _ in 1...50000 {
         Thread.init{
-            TylkoRaz.raz
+            OnlyOnce.once
         }
 
-        TylkoRaz.init().wtf()
+        OnlyOnce.init().wtf()
     }
 }
 
 //: ## Dispatch After
-//: Gdy chcemy aby jakieś zadanie zostało wykonane po pewnym czasie to GCD nam to umożliwia. Co bardzo fajne składnia się nieco uzywilizowała w Swift 3.
+//: Gdy chcemy aby jakieś zadanie zostało wykonane po pewnym czasie to GCD nam to umożliwia. Co bardzo fajne składnia się nieco ucywilizowała w Swift 3.
 
 xtimeBlock("Po") {
     
