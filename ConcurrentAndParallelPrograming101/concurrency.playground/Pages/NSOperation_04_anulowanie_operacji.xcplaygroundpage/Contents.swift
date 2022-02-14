@@ -7,12 +7,14 @@ import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-class Adding: Operation {
+typealias Consumer<T> = (T) -> ()
+
+final class Adding: Operation {
     
-    var numberA: Int
-    var numberB: Int
+    private(set) var numberA: Int
+    private(set) var numberB: Int
     private var result: Int = 0
-    var finalResult: ((Int) -> ())?
+    var finalResult: Consumer<Int>?
     
     init(a: Int, b: Int) {
         numberA = a
@@ -24,6 +26,8 @@ class Adding: Operation {
     override func main() {
         
         print("Dodawanie: W main()")
+
+        sleep(2)
 
         if isCancelled == true {
             return
@@ -40,8 +44,8 @@ class Adding: Operation {
     }
 }
 
-xtimeBlock("Po prostu biegniemy") {
-    let op1 = Adding.init(a: 2, b: 4)
+timeBlock("🥮 Po prostu biegniemy") {
+    let op1 = Adding(a: 2, b: 4)
     
     op1.finalResult = { result in
         print("Po prostu biegniemy: \(result)")
@@ -54,8 +58,8 @@ xtimeBlock("Po prostu biegniemy") {
 
 //: Zobaczmy teraz co się stanie jak takie zadanie zostanie natychmiast anulowane.
 
-xtimeBlock("Natychmiast anulujemy") {
-    let op1 = Adding.init(a: 2, b: 8)
+timeBlock("⚡️ Anulujemy przed wystartowaniem...") {
+    let op1 = Adding(a: 2, b: 8)
     
     op1.finalResult = { result in
         print("Natychmiast anulujemy: \(result)")
