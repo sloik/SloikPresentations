@@ -6,14 +6,14 @@ import Foundation
 import PlaygroundSupport
 
 
-class SimpleOperation: Operation {
+final class SimpleOperation: Operation {
     override func main() {
         sleep(1)
         print("Prościej się nie da -> Główny wątek: \(Thread.isMainThread)");
     }
 }
 
-xtimeBlock("Prosta Operacja") {
+timeBlock("🧤 Prosta Operacja") {
     SimpleOperation().start()
     SimpleOperation().start()
     SimpleOperation().start()
@@ -104,7 +104,7 @@ class AsynchronousTask: BaseAsynchronousOperation {
 //: Chcemy aby plac zabaw nie "umierał" zanim nie zostanie wykonane zadanie w tle.
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-xtimeBlock("AsynchroniczneZadanie") {
+timeBlock("🙉 AsynchroniczneZadanie") {
     print("Przed zadaniami...")
     
     AsynchronousTask().start()
@@ -114,7 +114,7 @@ xtimeBlock("AsynchroniczneZadanie") {
 
     print("Po zadaniach...")
     
-    //Usypiamy główny wątek na chwilę tak aby dać szansę na wykonanie się zadania jeszcze w klamerkach ;)
+    // Usypiamy główny wątek na chwilę tak aby dać szansę na wykonanie się zadania jeszcze w klamerkach ;)
 //    sleep(3)
 }
 
