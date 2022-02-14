@@ -4,12 +4,15 @@
  */
 import Foundation
 
-class Adding: Operation {
+typealias Consumer<T> = (T) -> ()
+
+final class Adding: Operation {
     
-    var numberA: Int
-    var numberB: Int
-    var result: Int = 0
-    var finalResult: ((_ result: Int) -> ())?
+    private (set) var numberA: Int
+    private (set) var numberB: Int
+    private (set) var  result: Int = 0
+
+    var finalResult: Consumer<Int>?
     
     init(a: Int, b: Int) {
         numberA = a
@@ -26,7 +29,7 @@ class Adding: Operation {
     }
 }
 
-xtimeBlock("Prosta Operacja Dodawania") {
+timeBlock("🌖 Prosta Operacja Dodawania") {
     let op1 = Adding.init(a: 2, b: 4)
     let op2 = Adding.init(a: 3, b: 6)
     
