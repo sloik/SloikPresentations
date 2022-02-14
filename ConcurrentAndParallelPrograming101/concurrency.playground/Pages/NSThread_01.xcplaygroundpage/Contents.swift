@@ -8,11 +8,15 @@ import Foundation
 //: Najprostszym sposobem utworzenia wątku w iOS jest skorzystanie z klasy do której możemy przekazać blok z *zadaniem* .
 
 let thread1 = Thread.init {
-    print("1111111111111111111111111111111111111111")
+    print("🧶                Główny wątek: \(Thread.isMainThread)")
+    print("🧶 Aplikacja jest wielowątkowa: \(Thread.isMultiThreaded())")
+    print("🧶 1111111111111111111111111111111111111111")
 }
 
 let thread2 = Thread {
-    print("2222222222222222222222222222222222222222")
+    print("🐬                Główny wątek: \(Thread.isMainThread)")
+    print("🐬 Aplikacja jest wielowątkowa: \(Thread.isMultiThreaded())")
+    print("🐬 2222222222222222222222222222222222222222")
 }
 
 
@@ -20,8 +24,8 @@ let thread2 = Thread {
 thread1.start()
 thread2.start()
 
-print("               Główny wątek: \(Thread.isMainThread)")
-print("Aplikacja jest wielowątkowa: \(Thread.isMultiThreaded())")
+print("🌸                Główny wątek: \(Thread.isMainThread)")
+print("🌸 Aplikacja jest wielowątkowa: \(Thread.isMultiThreaded())")
 
 
 //: [Wstecz](@previous) | [Następna strona](@next)
