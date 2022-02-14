@@ -25,14 +25,14 @@ let taskToDo = BlockOperation {
     print("Super cięzka robota -> Główny wątek: \(Thread.isMainThread)")
 }
 
-//: Przy operacji mozemy ustawic jej priorytet z jakim ma się wykonać na kolejce (o kolejkach później). [Dokumentacja](https://developer.apple.com/reference/foundation/operation/1411204-queuepriority)
+//: Przy operacji mozemy ustawic jej priorytet z jakim ma się wykonać na kolejce (o kolejkach później). [Dokumentacja](https://developer.apple.com/documentation/foundation/nsoperation/1411204-queuepriority)
 taskToDo.queuePriority = .normal
 
-//: Jak rownież dać hint do systemu ile zasobów ma przydzielić na wykonanie tego zadania. [Dokumentacja](https://developer.apple.com/reference/foundation/operation/1413553-qualityofservice)
+//: Jak rownież dać hint do systemu ile zasobów ma przydzielić na wykonanie tego zadania. [Dokumentacja](https://developer.apple.com/documentation/foundation/operation/1413553-qualityofservice)
 taskToDo.qualityOfService = .utility
 
 
-xtimeBlock("Tworzenie Operacji") {
+timeBlock("⏱ Tworzenie Operacji") {
     print("Przed wystartowaniem")
     taskToDo.start()
     print("Po wystartowaniu")
@@ -59,7 +59,7 @@ multiOperation.addExecutionBlock {
     print("Op3 -> Główny wątek: \(Thread.isMainThread)")
 }
 
-xtimeBlock("Multioperacja") {
+timeBlock("👯‍♀️ Multioperacja") {
     print("Przed")
     multiOperation.start()
     print("Po")
