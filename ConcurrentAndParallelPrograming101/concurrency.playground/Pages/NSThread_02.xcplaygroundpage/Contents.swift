@@ -7,7 +7,7 @@ import Foundation
 
 var threads : [Thread] = []
 
-for i in 0...20 {
+for i in 0...9 {
     let createdThread = Thread {
         let message = String(repeating: "\(i)", count: 20)
         print(message)
