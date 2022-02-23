@@ -25,20 +25,20 @@ timeBlock("🧤 Prosta Operacja") {
 class BaseAsynchronousOperation: Operation {
 //: Sami musimy zarządzać stanem.
     enum State {
-        case Ready, Executing, Finished
+        case ready, executing, finished
         func keyPath() -> String {
             switch self {
-            case .Ready:
+            case .ready:
                 return "isReady"
-            case .Executing:
+            case .executing:
                 return "isExecuting"
-            case .Finished:
+            case .finished:
                 return "isFinished"
             }
         }
     }
 //: Zgodność z KVO
-    var state = State.Ready {
+    var state = State.ready {
         willSet {
             willChangeValue(forKey: newValue.keyPath())
             willChangeValue(forKey: state.keyPath())
@@ -51,15 +51,15 @@ class BaseAsynchronousOperation: Operation {
     
 //: Wielkie nadpisywanie
     override var isReady: Bool {
-        return super.isReady && state == .Ready
+        return super.isReady && state == .ready
     }
     
     override var isExecuting: Bool {
-        return state == .Executing
+        return state == .executing
     }
     
     override var isFinished: Bool {
-        return state == .Finished
+        return state == .finished
     }
     
     override var isAsynchronous: Bool {
@@ -70,16 +70,16 @@ class BaseAsynchronousOperation: Operation {
  
     override func start() {
         if isCancelled {
-            state = .Finished
+            state = .finished
             return
         }
         
         main()
-        state = .Executing
+        state = .executing
     }
     
     override func cancel() {
-        state = .Finished
+        state = .finished
     }
 }
 
@@ -87,14 +87,14 @@ class BaseAsynchronousOperation: Operation {
 class AsynchronousTask: BaseAsynchronousOperation {
     override func main() {
         if isCancelled {
-            state = .Finished
+            state = .finished
             return
         }
         
         let thread = Thread.init {
             sleep(2)
             print("Taka Asynchroniczna Magia -> Główny wątek: \(Thread.isMainThread)");
-            self.state = .Finished
+            self.state = .finished
         }
         
         thread.start()
