@@ -74,8 +74,8 @@ class BaseAsynchronousOperation: Operation {
             return
         }
         
-        main()
         state = .executing
+        main()
     }
     
     override func cancel() {
@@ -84,7 +84,7 @@ class BaseAsynchronousOperation: Operation {
 }
 
 //: Ponieważ tamta logika będzie identyczna to możemy użyć jej jako klasy bazowej do naszych konkretnych asynchronicznych zadań. Co jest bardzo ważne **musimy pamiętać o zmianie stanu** gdy zadanie jest wykonane. Jest to wymagane aby nasza operacja była prawidłowo obsługiwana przez kolejki zadań (o czym później).
-class AsynchronousTask: BaseAsynchronousOperation {
+final class AsynchronousTask: BaseAsynchronousOperation {
     override func main() {
         if isCancelled {
             state = .finished
