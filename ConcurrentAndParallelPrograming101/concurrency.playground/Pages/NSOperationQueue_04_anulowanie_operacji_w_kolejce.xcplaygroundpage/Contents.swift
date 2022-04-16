@@ -7,7 +7,7 @@ import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-class RecipeStep: Operation {
+final class RecipeStep: Operation {
     let step: String
     
     init(step: String) {
@@ -22,11 +22,11 @@ class RecipeStep: Operation {
             return
         }
         
-        print("\(step) -> Główny wątek: \(Thread.isMainThread)");
+        print("\(step)");
     }
 }
 
-class Baking: AsyncOperation {
+final class Baking: AsyncOperation {
     override func main() {
         let thread = Thread.init {
             if self.isCancelled {
@@ -35,7 +35,7 @@ class Baking: AsyncOperation {
             }
             
             sleep(5)
-            print("🔥 Ciasto upieczone -> Główny wątek: \(Thread.isMainThread)")
+            print("🔥 Ciasto upieczone")
             
             self.state = .Finished
         }
@@ -46,14 +46,14 @@ class Baking: AsyncOperation {
 
 //: Tworzymy Zadania
 
-let addEggs    = RecipeStep.init(step: "dodaj jajka")
-let addMilk    = RecipeStep.init(step: "dodaj mleko")
-let addFlour   = RecipeStep.init(step: "dodaj mąkę")
-let mixDough   = RecipeStep.init(step: "mieszaj ciasto")
+let addEggs    = RecipeStep(step: "🥚 dodaj jajka")
+let addMilk    = RecipeStep(step: "🥛 dodaj mleko")
+let addFlour   = RecipeStep(step: "🌾 dodaj mąkę")
+let mixDough   = RecipeStep(step: "🥄 mieszaj ciasto")
 let bake       = Baking()
-let serveCake   = RecipeStep.init(step: "🍰 PODAJ CIASTO")
+let serveCake  = RecipeStep(step: "🥮 PODAJ CIASTO")
 
-let allOperations = [serveCake, bake, mixDough, addFlour, addMilk, addEggs]
+let allOperations = [serveCake, bake, mixDough, addFlour, addMilk, addEggs].shuffled()
 
 
 precedencegroup Additive {
@@ -75,7 +75,7 @@ queue.addOperations(allOperations, waitUntilFinished: false)
 sleep(3) // dajemy czas aby coś się wykonało na kolejce
 
 //: Tak anulujemy pojedyncze zadanie. Powinno wyglądać znajomo już do tego czasu.
-bake.cancel()
+bake.cancel() // anulowane zadanie nie blokuje kolejnego!
 
 //: Tak anulujemy wszystkie zadania w kolejce.
 queue.cancelAllOperations()

@@ -9,7 +9,7 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
 //: Czasami zachodzi potrzeba aby jakieś zadanie wykonało się przed innym (w pierwszej kolejności musimy zmieszać ciasto a potem wsadzamy je do piekarnika). Korzystając z kolejek operacji możemy ustawić zależności pomiędzy jej poszczególnymi zadaniami. Co więcej przy odrobinie przebiegłości możemy też przekazywać wynik jednej operacji bezpośrednio do drugiej.
 
-class RecipeStep: Operation {
+final class RecipeStep: Operation {
     let step: String
     
     init(step: String) {
@@ -18,17 +18,25 @@ class RecipeStep: Operation {
     }
     
     override func main() {
-        sleep(1)
+        let date = Date()
 
-        print("\(step) -> Główny wątek: \(Thread.isMainThread)");
+        print("🚀 \(step)", date, Thread.isMainThread)
+
+        sleep(2)
+
+        print("🏁 \(step)");
     }
 }
 
-class Baking: AsyncOperation {
+final class Baking: AsyncOperation {
     override func main() {
-        let thread = Thread.init {
+        let thread = Thread {
+            let date = Date()
+
+            print("🚀 ❤️‍🔥...", date, Thread.isMainThread)
+
             sleep(5)
-            print("Ciasto upieczone -> Główny wątek: \(Thread.isMainThread)")
+            print("🏁 ❤️‍🔥 Ciasto upieczone")
             
             self.state = .Finished
         }
@@ -38,21 +46,27 @@ class Baking: AsyncOperation {
 }
 
 //: Tworzymy Zadania
-let addEggs    = RecipeStep.init(step: "dodaj jajka")
-let addMilk    = RecipeStep.init(step: "dodaj mleko")
-let addFlour   = RecipeStep.init(step: "dodaj mąkę")
-let mixDough   = RecipeStep.init(step: "mieszaj ciasto")
+let addEggs    = RecipeStep(step: "🥚 dodaj jajka")
+let addMilk    = RecipeStep(step: "🥛 dodaj mleko")
+let addFlour   = RecipeStep(step: "🌾 dodaj mąkę")
+let mixDough   = RecipeStep(step: "🥄 mieszaj ciasto")
 let bake       = Baking()
-let serveCake  = RecipeStep.init(step: "podaj ciasto")
+let serveCake  = RecipeStep(step: "🥮 podaj ciasto")
 //: Dodajemy zależności
-xtimeBlock("Definiowanie zależności \"ręcznie\"") {
-    addMilk.addDependency(addEggs)
-    addFlour.addDependency(addMilk)
+timeBlock("🧢 Definiowanie zależności \"ręcznie\"") {
 
-//    mixDough.addDependency(addEggs)
-//    mixDough.addDependency(addMilk)
+    let someMagicValue: Bool = false
+
+    if someMagicValue {
+        addMilk.addDependency(addEggs)
+        addFlour.addDependency(addMilk)
+    } else {
+        mixDough.addDependency(addEggs)
+        mixDough.addDependency(addMilk)
+    }
 
     mixDough.addDependency(addFlour)
+
     bake.addDependency(mixDough)
     serveCake.addDependency(bake)
 }
@@ -60,20 +74,22 @@ xtimeBlock("Definiowanie zależności \"ręcznie\"") {
 precedencegroup Additive {
     associativity: left
 }
+
 infix operator |> : Additive
-func |>(lhs: Operation, rhs: Operation) -> Operation {
+
+@discardableResult func |>(lhs: Operation, rhs: Operation) -> Operation {
     rhs.addDependency(lhs)
     return rhs
 }
 
-xtimeBlock("Zależności dodane własnym operatorem") {
+xtimeBlock("🦏 Zależności dodane własnym operatorem") {
      addEggs |> addMilk |> addFlour |> mixDough |> bake |> serveCake
 }
 
 let queue = OperationQueue()
 queue.maxConcurrentOperationCount = 10 // mozna pobawic sie ilością
 
-timeBlock("start wszystkich operacji") {
+timeBlock("🏃🏻‍♂️ start wszystkich operacji") {
     
     let allOperations = [serveCake, bake, mixDough, addFlour, addMilk, addEggs]
 

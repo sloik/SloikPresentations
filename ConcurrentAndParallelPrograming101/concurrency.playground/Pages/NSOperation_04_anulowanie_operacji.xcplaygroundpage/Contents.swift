@@ -50,7 +50,7 @@ timeBlock("🥮 Po prostu biegniemy") {
     op1.finalResult = { result in
         print("Po prostu biegniemy: \(result)")
     }
-    
+
     op1.start()
 }
 

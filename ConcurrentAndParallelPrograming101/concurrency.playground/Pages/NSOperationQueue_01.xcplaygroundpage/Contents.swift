@@ -16,7 +16,7 @@ queue.maxConcurrentOperationCount = 2; // pobawmy się nieco wartością tej zmi
 
 //: Możemy dodawać zadania bezpośrednio do kolejki jako bloki bez konieczności tworzenia instancji NSOperacji. Zadania wykonują się natychmiast po dodaniu (oczywiście jeżeli kolejka na to pozwoli, jak nie to czekają na swoją kolej ;)).
 
-xtimeBlock("Dodawanie bloków do kolejki") {
+timeBlock("🧤 Dodawanie bloków do kolejki") {
     queue.addOperation { sleep(2); print("Adam")   }
     queue.addOperation { sleep(2); print("Babie")  }
     queue.addOperation { sleep(2); print("Cebule") }
@@ -29,7 +29,7 @@ xtimeBlock("Dodawanie bloków do kolejki") {
 
 //: ## Dodawanie NSOperacji
 
-class SimpleOperation: Operation {
+final class SimpleOperation: Operation {
     let message: String
     
     init(message: String) {
@@ -54,7 +54,7 @@ let simpleOperationDaje   = SimpleOperation.init(message: "Daje")
 let queue2 = OperationQueue()
 queue2.maxConcurrentOperationCount = 1
 
-xtimeBlock("Dodane własne operacje") {
+timeBlock("💍 Dodane własne operacje") {
     queue2.addOperation(simpleOperationAdam)
     queue2.addOperation(simpleOperationBabie)
     queue2.addOperation(simpleOperationCebule)
@@ -64,7 +64,7 @@ xtimeBlock("Dodane własne operacje") {
 }
 
 //: ## Wywołanie Operacji Na Głównym Wątku
-xtimeBlock("Wracamy do głównego wątku") {
+timeBlock("👘 Wracamy do głównego wątku") {
     
     OperationQueue.main.addOperation {
         print("Halo! Czy to główny wątek? Główny wątek: \(Thread.isMainThread)")
