@@ -12,7 +12,7 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
 
 let queue = OperationQueue()
-queue.maxConcurrentOperationCount = 2; // pobawmy się nieco wartością tej zmiennej 1,2,5,15 etc.
+queue.maxConcurrentOperationCount = 2 // pobawmy się nieco wartością tej zmiennej 1,2,5,15 etc.
 
 //: Możemy dodawać zadania bezpośrednio do kolejki jako bloki bez konieczności tworzenia instancji NSOperacji. Zadania wykonują się natychmiast po dodaniu (oczywiście jeżeli kolejka na to pozwoli, jak nie to czekają na swoją kolej ;)).
 
@@ -45,10 +45,10 @@ final class SimpleOperation: Operation {
 }
 
 //: Tworzymy operacje
-let simpleOperationAdam   = SimpleOperation.init(message: "Adam")
-let simpleOperationBabie  = SimpleOperation.init(message: "Babie")
-let simpleOperationCebule = SimpleOperation.init(message: "Cebule")
-let simpleOperationDaje   = SimpleOperation.init(message: "Daje")
+let simpleOperationAdam   = SimpleOperation(message: "Adam")
+let simpleOperationBabie  = SimpleOperation(message: "Babie")
+let simpleOperationCebule = SimpleOperation(message: "Cebule")
+let simpleOperationDaje   = SimpleOperation(message: "Daje")
 
 //: Tworzymy kolejkę
 let queue2 = OperationQueue()
