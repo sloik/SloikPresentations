@@ -18,5 +18,6 @@
         <page name='GCD_03_Dispatch_Groups_Barrier'/>
         <page name='GCD_04_Dispatch_Once_After'/>
         <page name='async_await_01'/>
+        <page name='MainActor'/>
     </pages>
 </playground>
