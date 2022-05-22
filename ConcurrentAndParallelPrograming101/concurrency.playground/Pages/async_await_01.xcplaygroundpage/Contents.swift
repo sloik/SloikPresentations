@@ -23,6 +23,9 @@
 
  Umownie powiedzmy, że to jest _zbiór zasad_ jakich powinniśmy przestrzegać przy pisaniu współbieżnego i asynchronicznego kodu. Kompilator _zna_ te zasady i wykorzystuje je do generowania wydajnego i bezpiecznego kodu. Dodatkowo gdy coś zrobisz potencjalnie niebezpiecznego to program się nie skompiluje!
 
+ # Links
+
+ * [Meet Swift Concurrency](https://developer.apple.com/news/?id=2o3euotz)
  */
 
 
