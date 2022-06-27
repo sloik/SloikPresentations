@@ -26,6 +26,8 @@
  # Links
 
  * [Meet Swift Concurrency](https://developer.apple.com/news/?id=2o3euotz)
+ * [WWDC22 -Visualize and optimize Swift concurency](https://developer.apple.com/wwdc22/110350)
+
  */
 
 
