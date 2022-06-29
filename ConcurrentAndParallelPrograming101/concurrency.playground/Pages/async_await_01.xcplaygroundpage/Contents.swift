@@ -28,6 +28,7 @@
  * [Meet Swift Concurrency](https://developer.apple.com/news/?id=2o3euotz)
  * [WWDC22 -Visualize and optimize Swift concurency](https://developer.apple.com/wwdc22/110350)
  * [RW AsyncSequence & AsyncStream Tutorial for iOS](https://www.raywenderlich.com/34044359-asyncsequence-asyncstream-tutorial-for-ios)
+ * [RW Book - Modern Concurrency in Swift](https://www.raywenderlich.com/books/modern-concurrency-in-swift)
 
  */
 
