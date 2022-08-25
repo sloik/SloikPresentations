@@ -31,6 +31,7 @@
  * [RW Book - Modern Concurrency in Swift](https://www.raywenderlich.com/books/modern-concurrency-in-swift)
 * [WWDC22 Meet distributed actors in Swift](https://developer.apple.com/wwdc22/110356)
  * [YT - Swiftful Thinking - Swift Concurrency (Intermediate Level) Playlist](https://www.youtube.com/playlist?list=PLwvDm4Vfkdphr2Dl4sY4rS9PLzPdyi8PM)
+ * [Andy Ibanez - Modern Concurrency in Swift](https://www.andyibanez.com/posts/modern-concurrency-in-swift-introduction/)
 
  */
 
