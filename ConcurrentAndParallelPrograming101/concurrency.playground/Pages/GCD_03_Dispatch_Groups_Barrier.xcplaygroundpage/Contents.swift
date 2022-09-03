@@ -8,7 +8,12 @@ import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-//: Korzystanie ze wspólnego zasobu z wielu różnych wątków może być nieco skomplikowane. Tak długo jeżeli wszystkie wątki tylko czytają z danego zasobu to nie ma żadnego problemu. W dowolnym momencie takie czytanie może zostać przerwane i wznowione a odczytana wartość zawsze będzie prawidłowa. Problem powstaje gdy chociaż jeden z wątków chciały coś w tym czasie zapisać do tego zasobu. 
+/*:
+
+ Korzystanie ze wspólnego zasobu z wielu różnych wątków może być nieco skomplikowane. Tak długo jeżeli wszystkie wątki tylko czytają z danego zasobu to nie ma żadnego problemu. W dowolnym momencie takie czytanie może zostać przerwane i wznowione a odczytana wartość zawsze będzie prawidłowa. Problem powstaje gdy chociaż jeden z wątków chciały coś w tym czasie zapisać do tego zasobu. 
+
+ */
+
 
 xtimeBlock("Problem") {
     
@@ -81,6 +86,14 @@ xtimeBlock("Rozwiązanie") {
 }
 
 PlaygroundPage.current.finishExecution()
+
+
+
+/*:
+
+# Deadlock
+
+ */
 
 
 //: [Wstecz](@previous) | [Następna strona](@next)
