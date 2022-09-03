@@ -17,6 +17,6 @@
  > # Rozdział 4 - Grand Central Dispatch
  * ## [Dispatch Qeues - tworzenie, dodawanie zadań](GCD_01_Dispatch_Queues)
  * ## [Dispatch Groups](GCD_02_Dispatch_Groups)
- * ## [Barriery](GCD_03_Dispatch_Groups_Barrier)
+ * ## [Problemy / Data Race / Deadlock](GCD_03_Dispatch_Groups_Barrier)
  * ## [Raz i Po / dispatch_once / dispatch_after](GCD_04_Dispatch_Once_After)
 */
