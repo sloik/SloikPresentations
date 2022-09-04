@@ -304,4 +304,40 @@ xtimeBlock("⛺️ Wołamy Główny Wątek") {
     .start()
 }
 
+/*:
+
+ # Za dużo wątków
+
+ Im więcej jest tworzonych prywatnych kolejek tym więcej wątków jest tworzonych. Komupter ma ograniczone zasoby. Jak już wcześniej o tym było wspominane to może spowodować pogorszenie wydajności.
+
+ Jednym ze sposobów na radzenie sobie z tym jest używanie globalnych kolejek. Natomiast są one równoległe. Kolejka seryjna ma tą zaletę, że wiemy że zadania będą się na niej wykonywać _jedno za drugim_.
+
+ ## Oddelegowanie pracy kolejki
+
+ Okazuje się, że można utworzyć kolejkę seryjną ale zlecić jej użycie kolejki globalnej. W ten sposób dostajemy działanie kolejki seryjnej a reużywamy wątki przeznaczone na kolejki globalne.
+
+ */
+
+
+timeBlock("🚄 Threads") {
+
+    let targetQueue = DispatchQueue(label: "lekko.techno.threads.target", attributes: .concurrent)
+
+    let sq1 = DispatchQueue(label: "lekko.techno.threads.1", target: targetQueue)
+    let sq2 = DispatchQueue(label: "lekko.techno.threads.2", target: targetQueue)
+
+    func jobToDo(queue: String, index: Int) {
+        print("🛫 starting job", index, "on", queue)
+        sleep(1)
+        print("🛬 done job", index, "on", queue)
+    }
+
+    for index in 0...3 {
+        sq1.async { jobToDo(queue: sq1.label, index: index) }
+        sq2.async { jobToDo(queue: sq2.label, index: index) }
+    }
+}
+
+
+
 //: [Wstecz](@previous) | [Następna strona](@next)

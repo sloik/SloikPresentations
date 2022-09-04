@@ -6,6 +6,7 @@
 import Foundation
 import PlaygroundSupport
 
+
 PlaygroundPage.current.needsIndefiniteExecution = true
 
 /*:
@@ -51,7 +52,7 @@ xtimeBlock("Rozwiązanie") {
         
         override open func change(street: String, number: String) {
 //: Tworzenie Bariery
-            isolation.async(flags: .barrier) { // nowa składnia uwaga!
+            isolation.async(flags: .barrier) { 
                 super.change(street: street, number: number)
             }
         }
@@ -85,15 +86,68 @@ xtimeBlock("Rozwiązanie") {
     print("\nOstatecznie: \(address.full)")
 }
 
-PlaygroundPage.current.finishExecution()
-
-
-
 /*:
 
 # Deadlock
 
+_Zakleszczenie_ najczęściej występuje w sytuacji gdy dwa programy lub wątki współdzielą zasób i skutecznie uniemożliwiają sobie dostanie się do tego zasobu.
+
+ W świecie iOS może się to objawiać przez zlecenie pracy synchronicznie na tą samą kolekle
+
  */
 
+xtimeBlock("🔒 Deadlock") {
+
+    let serialQueue = DispatchQueue(label: "lekko.techno.serial.deadlock")
+
+    print("Adding work to queue...")
+    serialQueue.sync {
+
+        print("Starting work on a task... and dispatching to the sirial queue synchronously")
+
+        serialQueue.sync {
+            print("We should start work but...")
+        }
+    }
+
+    print("😎 all is done")
+}
+
+/*:
+
+ Aplikacja crashuje. Dzieje się tak dlatego, że dajemy zadanie do wykoania i czekamy na nie. Wewnątrz tego zadania ponownie dodajemy zadanie i na nie czekamy. Jednak to drugie zadanie nie może wystartować ponieważ to pierwsze nie skończyło. Mamy tu impas.
+
+ Sytuacja nie zmienia się nawet gdy pierwsze wywołanie jest asynchroniczne:
+ */
+
+xtimeBlock("🤿 Deadlock with async") {
+
+    let serialQueue = DispatchQueue(label: "lekko.techno.serial.deadlock")
+
+    print("Adding work to queue...")
+    serialQueue.async { // <-- this is now async
+
+        print("Starting work on a task... and dispatching to the sirial queue synchronously")
+
+        serialQueue.sync {
+            print("😥😭 We should start work but...") // this never prints
+        }
+    }
+
+    // TODO for the reader:
+    // What will happen if you add more task on a serial queue?
+    // hint: add a sleep so the code above will have a chance to run
+
+    print("😎 all is done")
+}
+
+/*:
+
+ Na pierwszy rzut oka jest lepiej ale problem jest dokladnie ten sam i dlatego nie widać wewnętrznego printa.
+
+ */
 
 //: [Wstecz](@previous) | [Następna strona](@next)
+
+print("🏁")
+
