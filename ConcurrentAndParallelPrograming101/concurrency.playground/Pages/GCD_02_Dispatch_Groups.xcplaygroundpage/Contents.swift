@@ -8,20 +8,31 @@ import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-//: Sprawdzanie zakończenia pojedynczego tasku jest banalnie proste (wystarczy dodać taką informacje na koniec wrzuconego bloku i gotowe). Co w sytuacji gdy mamy tych zadań dużo i chcemy się dowiedzieć gdy wszystkie się zakończą? Całe szczęście z pomocą nadchodzą grupy :)
-//: ## Tworzymy Grupe
+/*:
+
+ Sprawdzanie zakończenia pojedynczego tasku jest banalnie proste (wystarczy dodać taką informacje na koniec wrzuconego bloku i gotowe). Co w sytuacji gdy mamy tych zadań dużo i chcemy się dowiedzieć gdy wszystkie się zakończą? Całe szczęście z pomocą nadchodzą grupy :)
+
+ ## Tworzymy Grupy
+
+ */
+
 let groupA = DispatchGroup()
-
-//: Świetnie nam idzie. Zrobmy jeszcze jedna.
-
 let groupB = DispatchGroup()
 
-//: Potrzebujemy kolejki na której będziemy uruchamiac nazsze zadania
-let systemQueue = DispatchQueue.global(qos: .background)
-let serialQueue   = DispatchQueue.init(label: "Seryjne Kolejka1")
+/*:
+ Potrzebujemy kolejek na których będziemy uruchamiać zadania
+ */
 
-//: ## Notyfikacja o Zakończeniu Wszystkich Zadań w Grupie
-//: Zadania w grupie mogą się znajdować w różnych kolejkach.
+let systemQueue = DispatchQueue.global(qos: .background)
+let serialQueue = DispatchQueue(label: "lekko.techno.group.demo.1")
+
+/*:
+ ## Notyfikacja o Zakończeniu Wszystkich Zadań w Grupie
+
+ Zadania w grupie mogą się znajdować w różnych kolejkach.
+
+ */
+
 
 xtimeBlock("Wszystkie Zadania Skończone") {
     
@@ -43,8 +54,14 @@ xtimeBlock("Wszystkie Zadania Skończone") {
     print("Po czekaniu na grupę A")
 }
 
-//: Dispatch Group Enter / Leave
-//: Jeżeli używamy metod asynchronicznych to z punktu widzenia grupy zadanie się wykonało (doszło do końca wykonywanej funkcji). Chociaż tak na prawdę może oczekiwać np na odpowiedź z serwera lub zakończenie innego asynchronicznego zadania.
+/*:
+
+ ## Dispatch Group Enter / Leave
+
+ Jeżeli używamy metod asynchronicznych to z punktu widzenia grupy zadanie się wykonało (doszło do końca wykonywanej funkcji). Chociaż tak na prawdę może oczekiwać np na odpowiedź z serwera lub zakończenie innego asynchronicznego zadania.
+
+ */
+
 
 xtimeBlock("Problem Przy Asynchronicznych Metodach") {
     
@@ -61,7 +78,10 @@ xtimeBlock("Problem Przy Asynchronicznych Metodach") {
     }
 }
 
-//: Rozwiązaniem jest "ręczne" oznaczenie w którym momencie zadanie **wchodzi** do grupy i w którym **wychodzi**.
+/*:
+ Rozwiązaniem jest "ręczne" oznaczenie w którym momencie zadanie **wchodzi** do grupy i w którym **wychodzi**.
+ */
+
 xtimeBlock("Rozwiązanie Przy Asynchronicznych Metodach") {
     
     groupA.enter()
@@ -81,3 +101,5 @@ xtimeBlock("Rozwiązanie Przy Asynchronicznych Metodach") {
 }
 
 //: [Wstecz](@previous) | [Następna strona](@next)
+
+print("🏁")
