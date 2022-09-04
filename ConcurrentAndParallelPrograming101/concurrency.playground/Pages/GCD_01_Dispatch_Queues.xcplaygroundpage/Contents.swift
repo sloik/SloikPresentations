@@ -29,9 +29,13 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
  Natomiast można mieć kilka takich kolejek i wtedy z perspektywy tych bloków kilka na raz będzie jednocześnie wykonywanych.
 
+ Kolejki seryjne używane są do synchronizacji dostępu do współdzielonego zasobu oraz do kontroli kolejności kiedy coś zostanie wykonane.
+
 ## Concurent queue
 
  **Concurrent queue** woła blok również w kolejności FIFO ale nie czeka na jego zakończenie zanim wywoła kolejny w kolejce. Oznacza to, że nie można polegać na kolejności w jakiej zakończą się zadania.
+
+ System zadaba o to aby stworzyć taką ilość wątków aby wykonać jak najwięcej zadań dodanych do kolejki jak najwydajniej się da.
 
  ## Main Queue
 
