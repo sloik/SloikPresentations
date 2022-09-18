@@ -56,7 +56,7 @@ xtimeBlock("🏓 Once") {
 
 Klasa `OnlyOnce` posiada statyczną zmienną `once`. Jej wartość to wynik działania closure wypisującego text do konsoli. Metoda `wtf` służy do zwrócenia wartości, która została przypisana do zmiennej statycznej.
 
-Przykład zaczyna się od utworzenia instancji. Jak widać po wyniku w konsoli w tym momencie blok inicjalizujący zmienna się nie uruchomił. Jest to zgodne z dokumentacją, która mówi, że property na typie są leniwe bez potrzeby anotacji.
+Przykład zaczyna się od utworzenia instancji. Jak widać po wyniku w konsoli w tym momencie blok inicjalizujący zmienną się nie uruchomił. Jest to zgodne z dokumentacją, która mówi, że property na typie są leniwe bez potrzeby anotacji.
 
 W dalszej części jest tworzone 50k wątków! Jednak metoda została wykonana raz.
 
