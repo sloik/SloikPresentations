@@ -10,7 +10,7 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
 /*:
 
- Sprawdzanie zakończenia pojedynczego tasku jest banalnie proste (wystarczy dodać taką informacje na koniec wrzuconego bloku i gotowe). Co w sytuacji gdy mamy tych zadań dużo i chcemy się dowiedzieć gdy wszystkie się zakończą (przetwarzamy różne dane lub pobieramy na raz coś z kilku endpoint-ów)?
+ Sprawdzanie zakończenia pojedynczego taska jest banalnie proste (wystarczy dodać taką informacje na koniec wrzuconego bloku i gotowe). Co w sytuacji gdy mamy tych zadań dużo i chcemy się dowiedzieć gdy wszystkie się zakończą (przetwarzamy różne dane lub pobieramy na raz coś z kilku endpoint-ów)?
 
  Całe szczęście z pomocą nadchodzą grupy :)
 
@@ -39,9 +39,9 @@ let serialQueue = DispatchQueue(label: "lekko.techno.group.demo.1")
  * opcjonalnie możemy dodać na grupie blok jaki ma się wykonać po wykonaniu wszystkich zadań z grupy
  * opcjonalnie czekamy synchronicznie aż wszystkie zadania się wykonają
 
- Nie ma wymogu aby najpierw dodawać zadania a potem deifniować closure jaki ma byc wykonany po zakończeniu zadań z grupy.
+ Nie ma wymogu aby najpierw dodawać zadania a potem definiować closure jaki ma być wykonany po zakończeniu zadań z grupy.
 
- Tak samo nie trzeba czekać synchronicznie jednak z jakiegoś powodu chcemy to robic. Tu życiowym przykładem jest dalszy bieg programu dopiero jak pobierzemy jakieś dane z `N` serwisów. Strzały mogą być wykonane równolegle i dopiero po ich zakończeniu chcemy je procesować.
+ Tak samo nie trzeba czekać synchronicznie jednak z jakiegoś powodu chcemy to robić. Tu życiowym przykładem jest dalszy bieg programu dopiero jak pobierzemy jakieś dane z `N` serwisów. Strzały mogą być wykonane równolegle i dopiero po ich zakończeniu chcemy je procesować.
 
  Poniżej przykład który robi te wszystkie rzeczy:
 
