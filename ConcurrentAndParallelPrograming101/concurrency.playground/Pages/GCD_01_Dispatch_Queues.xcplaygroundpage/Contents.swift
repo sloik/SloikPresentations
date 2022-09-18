@@ -13,7 +13,7 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
  # [Grand Central Dispatch - GCD](https://developer.apple.com/documentation/DISPATCH)
 
- Tworzenie, zarządanie i synchronizacja wątków nie jest taka prosta. Ciężko jest dobrać odpowiednią ilość wątków do dostępnych rdzeni/procesorów. Trzeba pomyśleć też o aktualbym obciążeniu systemu. Aby nieco odciązyć developera od tego rodzaju zadań Apple napisało GCD. Jest to zestaw ficzerów/umiejętności języka, bibliotek działających w czasie życia aplikacji oraz na poziomie systemu, które wspierają wykonywanie kodu na wielu procesorach/rdzeniach.
+ Tworzenie, zarządzanie i synchronizacja wątków nie jest taka prosta. Ciężko jest dobrać odpowiednią ilość wątków do dostępnych rdzeni/procesorów. Trzeba pomyśleć też o aktualnym obciążeniu systemu. Aby nieco odciążyć developera od tego rodzaju zadań Apple napisało GCD. Jest to zestaw ficzerów/umiejętności języka, bibliotek działających w czasie życia aplikacji oraz na poziomie systemu, które wspierają wykonywanie kodu na wielu procesorach/rdzeniach.
 
  Warto wiedzieć, że wszystko o czym rozmawialiśmy w `NSOperation` jest obiektową nakładką na API dostarczone przez GCD.
 
@@ -25,21 +25,21 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
 ## Serial queue
 
- **Serial queue** wywołuje tylko jeden blok na raz. Czyli nie wystartuje następnego taks-a aż poprzedni nie zostanie ukończony.
+ **Serial queue** wywołuje tylko jeden blok na raz. Czyli nie wystartuje następnego task-a aż poprzedni nie zostanie ukończony.
 
  Natomiast można mieć kilka takich kolejek i wtedy z perspektywy tych bloków kilka na raz będzie jednocześnie wykonywanych.
 
  Kolejki seryjne używane są do synchronizacji dostępu do współdzielonego zasobu oraz do kontroli kolejności kiedy coś zostanie wykonane.
 
-## Concurent queue
+## Concurrent queue
 
  **Concurrent queue** woła blok również w kolejności FIFO ale nie czeka na jego zakończenie zanim wywoła kolejny w kolejce. Oznacza to, że nie można polegać na kolejności w jakiej zakończą się zadania.
 
- System zadaba o to aby stworzyć taką ilość wątków aby wykonać jak najwięcej zadań dodanych do kolejki jak najwydajniej się da.
+ System zadba o to aby stworzyć taką ilość wątków aby wykonać jak najwięcej zadań dodanych do kolejki jak najwydajniej się da.
 
  ## Main Queue
 
- Jest to **seryjna** kolejka przeznaczona na rzeczy związane z aktualizacją UI wykonująca jedno zadanie na raz. Wszystkie zadania są uruchamiane na głównym wątku aplikacji. Jest to wątek tworzony przy uruchomieniu aplikacji, któremu system przydziela najwyższy priorytet tak aby aplikacja była rezponsywna.
+ Jest to **seryjna** kolejka przeznaczona na rzeczy związane z aktualizacją UI wykonująca jedno zadanie na raz. Wszystkie zadania są uruchamiane na głównym wątku aplikacji. Jest to wątek tworzony przy uruchomieniu aplikacji, któremu system przydziela najwyższy priorytet tak aby aplikacja była responsywna.
 
 Ważne jest aby nie utożsamiać `main queue` z `main thread`. Może się zdarzyć, że inne kolejki też będą odpalać zadania na głównym wątku. Zdanie więcej można przeczytać na [Main thread and main queue: what’s the difference?](https://www.hackingwithswift.com/quick-start/concurrency/main-thread-and-main-queue-whats-the-difference)
 
@@ -55,7 +55,7 @@ let serialQueue1 = DispatchQueue(label: "lekko.techno.serial.queue.1")
 
  ### QoS - Quality of Service
 
-Możemy dać dla systemu wskazówkę jak ważna jest dla nas ta kolejka czyli jak często sytem powinien wykonywać zadania na nią przesłane. Po konkretne wartości zapraszam rzucić okiem do dokumentacji lub kodu.
+Możemy dać wskazówkę systemowi jak ważna jest dla nas ta kolejka czyli jak często system powinien wykonywać zadania na nią przesłane. Po konkretne wartości zapraszam rzucić okiem do dokumentacji lub kodu.
 
  */
 
@@ -74,7 +74,7 @@ let concurrentQueue = DispatchQueue(label: "lekko.techno.concurrent.queue.1", at
 
  # Global Queues
 
- System dostarcza nam juz globale kolejki równoległe z których możemy korzystać.
+ System dostarcza nam juz globalne kolejki równoległe z których możemy korzystać.
 
  * [Stara ale jara dokumentacja](https://developer.apple.com/library/content/documentation/General/Conceptual/ConcurrencyProgrammingGuide/OperationQueues/OperationQueues.html#//apple_ref/doc/uid/TP40008091-CH102-SW5)
  * [Nowsza dokumentacja](https://developer.apple.com/documentation/dispatch/dispatchqueue/2300077-global)
@@ -93,9 +93,9 @@ let systemQueue = DispatchQueue.global(qos: .background)
 
  ### Synchroniczne i Asynchroniczne
 
- Kolejki seryjne (serial) oraz równoległe (concurent) mogą wykonywać zadania synchronicznie lub asynchronicznnie.
+ Kolejki seryjne (serial) oraz równoległe (concurrent) mogą wykonywać zadania synchronicznie lub asynchronicznnie.
 
- Jeżeli zadanie jest wykonywane **synchronicznie** oznacza to, że wykonanie kodu jest _zablokowane_ na tej linijce. Dopiero gdy zadanie się wykona się to kod _pobiegnie_ dalej. Jest to takie samo zachowanie jak byśmy wywołali funkcję (z tą różnicą, że funkcja została by uruchomiona na aktualnym wątku). Do momentu zakończenia działania funkcji program w aktualnym miejscu nie poruszy się do przodu.
+ Jeżeli zadanie jest wykonywane **synchronicznie** oznacza to, że wykonanie kodu jest _zablokowane_ na tej linijce. Dopiero gdy zadanie się wykona się to kod _pobiegnie_ dalej. Jest to takie samo zachowanie jak byśmy wywołali funkcję (z tą różnicą, że funkcja zostałaby uruchomiona na aktualnym wątku). Do momentu zakończenia działania funkcji program w aktualnym miejscu nie poruszy się do przodu.
 
  Zadanie wysłane na kolejkę **asynchroniczne** nie czeka na zakończenie tego zadania. Bieg programu natychmiast przechodzi do nastepnej linijki kodu.
 
@@ -164,7 +164,7 @@ xtimeBlock("🔪 Dodawanie Zadań 1") {
 
  Po wyniku w konsoli widać, że wykonanie kodu zatrzymało się gdy zadania były dodawane synchronicznie i nie czekało gdy zadania były dodawane asynchronicznie.
 
-Poprzedni przykład pokazał wszystkie możliwe kombinacje jakie mogą wystąpić w doddawaniu zadań do kolejki (serial sync, serial async, concurent sync, concurent async). W przykładzie niżej skupimy się na _serial sync_:
+Poprzedni przykład pokazał wszystkie możliwe kombinacje jakie mogą wystąpić w dodawaniu zadań do kolejki (serial sync, serial async, concurent sync, concurent async). W przykładzie niżej skupimy się na _serial sync_:
  */
 
 
@@ -185,7 +185,7 @@ xtimeBlock("🏓 Dużo zadań seryjnych (sync)") {
 
 /*:
 
- Może się zdażyć, że jako optymalizacje system wywoła zadanie z kolejki na głównym wątku. Istotne natomiast jest to, że za każdym razem kod _czeka_ na zakończenie zadania zanim przejdzie dalej.
+ Może się zdarzyć, że jako optymalizacje system wywoła zadanie z kolejki na głównym wątku. Istotne natomiast jest to, że za każdym razem kod _czeka_ na zakończenie zadania zanim przejdzie dalej.
 
  W przykładzie niżej dodamy wszystkie zadania asynchronicznie:
 
@@ -211,7 +211,7 @@ xtimeBlock("🐇 Dużo zadań seryjnych (async)") {
 
 ## Wiele seryjnych kolejek
 
- Wiemży że gdy zadanie dodajemy asynchronicznie to nie czekamy na zakończenie tego zadania. Dzięki temu w zależności od tego co chcemy zrobić można zlecać dodawanie zadań do różnych kolejek:
+ Wiemy że gdy zadanie dodajemy asynchronicznie to nie czekamy na zakończenie tego zadania. Dzięki temu w zależności od tego co chcemy zrobić można zlecać dodawanie zadań do różnych kolejek:
 
  */
 
@@ -281,7 +281,7 @@ xtimeBlock("🛣🛣🛣 Dużo zadań równoległych (async)") {
 
 ## DispatchWorkItem i  `Main Queue`
 
-Zadanie które chcemy wykonać możemy opakować w obiekt klasy `DispatchWorkItem`. Chyba najczęstrzym powodem aby to robić w ten sposób jest opcja anulowania zadania. W przypadku API z closure-s zadanie jest wysłane i nie mamy jak tego zrobic. Mając referencje do `work item`a możemy zawołać na nim metodę [`cancel`](https://developer.apple.com/documentation/dispatch/dispatchworkitem/1780910-cancel)
+Zadanie które chcemy wykonać możemy opakować w obiekt klasy `DispatchWorkItem`. Chyba najczęstszym powodem aby to robić w ten sposób jest opcja anulowania zadania. W przypadku API z closure-s zadanie jest wysłane i nie mamy jak tego zrobić. Mając referencje do `work item`a możemy zawołać na nim metodę [`cancel`](https://developer.apple.com/documentation/dispatch/dispatchworkitem/1780910-cancel)
 
  */
 
