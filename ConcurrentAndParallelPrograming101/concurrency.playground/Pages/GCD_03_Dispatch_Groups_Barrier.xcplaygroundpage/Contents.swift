@@ -188,7 +188,7 @@ xtimeBlock("🔒 Deadlock") {
 
 /*:
 
- Aplikacja crashuje. Dzieje się tak dlatego, że dajemy zadanie do wykoania i czekamy na nie. Wewnątrz tego zadania ponownie dodajemy zadanie i na nie czekamy. Jednak to drugie zadanie nie może wystartować ponieważ to pierwsze nie skończyło. Mamy tu impas.
+ Aplikacja crashuje. Dzieje się tak dlatego, że dajemy zadanie do wykonania i czekamy na nie. Wewnątrz tego zadania ponownie dodajemy zadanie i na nie czekamy. Jednak to drugie zadanie nie może wystartować ponieważ to pierwsze nie skończyło. Mamy tu impas.
 
  Sytuacja nie zmienia się nawet gdy pierwsze wywołanie jest asynchroniczne:
  */
