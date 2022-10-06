@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "OptionalAPI",
+        "repositoryURL": "https://github.com/sloik/OptionalAPI",
+        "state": {
+          "branch": null,
+          "revision": "c5309c9868f1bff86140d9b2234636689f0ca5e7",
+          "version": "2.2.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

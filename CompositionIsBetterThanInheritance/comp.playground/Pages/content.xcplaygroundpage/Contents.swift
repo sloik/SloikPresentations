@@ -52,6 +52,7 @@ import UIKit
  Nothing! But if your system evolves changes to this inheritance hierarchy are hard to do. Other clients depend on certain behaviours. Then requirements change and you have to adopt. It's possible but painful.
 
  _Example of inheritance hierarchy. Just image that you have to change anything here!_
+ 
  ![](uikit_classes.jpg)
  
  `How composition helps?`
