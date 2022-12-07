@@ -41,6 +41,7 @@
  * [Andy Ibanez - Modern Concurrency in Swift](https://www.andyibanez.com/posts/modern-concurrency-in-swift-introduction/)
  * [YT - How to download images in parallel with Swift Concurrency](https://www.youtube.com/watch?v=MjfEpYs5XA4)
  * [YT - Learn Swift Concurrency online for FREE, Async Await, Actors, Continuations And More](https://www.youtube.com/watch?v=U6lQustiTGE)
+ * [YT - Willing Suspension of Disbelief - iOS Conf SG 2022](https://youtu.be/FEqmYi-FaB8)
 
  */
 
