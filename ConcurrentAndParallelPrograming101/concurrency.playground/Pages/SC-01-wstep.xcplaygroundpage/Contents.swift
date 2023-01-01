@@ -43,6 +43,7 @@
  * [YT - Learn Swift Concurrency online for FREE, Async Await, Actors, Continuations And More](https://www.youtube.com/watch?v=U6lQustiTGE)
  * [YT - Willing Suspension of Disbelief - iOS Conf SG 2022](https://youtu.be/FEqmYi-FaB8)
  * [YT - How to use Continuations in Swift (withCheckedThrowingContinuation) | Swift Concurrency #7](https://youtu.be/Tw_WLMIfEPQ)
+ * [YT - Swift Concurrency Under the Hood - iOS Conf SG 2022](https://youtu.be/wp5vIVxABFk)
 
  */
 
