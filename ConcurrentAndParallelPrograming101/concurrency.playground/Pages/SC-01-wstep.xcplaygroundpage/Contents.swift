@@ -44,6 +44,10 @@
  * [YT - Willing Suspension of Disbelief - iOS Conf SG 2022](https://youtu.be/FEqmYi-FaB8)
  * [YT - How to use Continuations in Swift (withCheckedThrowingContinuation) | Swift Concurrency #7](https://youtu.be/Tw_WLMIfEPQ)
  * [YT - Swift Concurrency Under the Hood - iOS Conf SG 2022](https://youtu.be/wp5vIVxABFk)
+ * [Limit Swift Concurrency's cooperative pool
+](https://alejandromp.com/blog/limit-swift-concurrency-cooperative-pool)
+ * [Task Groups in Swift explained with code examples](https://www.avanderlee.com/concurrency/task-groups-in-swift)
+ * [Debouncing with Swift concurrency](https://sideeffect.io/posts/2023-01-11-regulate)
 
  */
 
