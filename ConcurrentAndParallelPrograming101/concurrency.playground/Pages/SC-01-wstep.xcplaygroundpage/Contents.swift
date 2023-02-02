@@ -48,6 +48,7 @@
 ](https://alejandromp.com/blog/limit-swift-concurrency-cooperative-pool)
  * [Task Groups in Swift explained with code examples](https://www.avanderlee.com/concurrency/task-groups-in-swift)
  * [Debouncing with Swift concurrency](https://sideeffect.io/posts/2023-01-11-regulate)
+ * [Async/Await in Swift](https://youtu.be/esmf26aGz4s)
 
  */
 
