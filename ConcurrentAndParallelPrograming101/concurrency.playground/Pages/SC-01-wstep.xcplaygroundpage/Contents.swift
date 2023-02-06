@@ -49,6 +49,10 @@
  * [Task Groups in Swift explained with code examples](https://www.avanderlee.com/concurrency/task-groups-in-swift)
  * [Debouncing with Swift concurrency](https://sideeffect.io/posts/2023-01-11-regulate)
  * [Async/Await in Swift](https://youtu.be/esmf26aGz4s)
+ * [How do Actors work in Swift?](https://youtu.be/8jvtHCXJ4Ow)
+ * [YT - 2021 LLVM Dev Mtg “Asynchronous Functions in Swift”](https://youtu.be/H_K-us4-K7s)
+ * [YT - 2016 LLVM Developers’ Meeting: G. Nishanov “LLVM Coroutines”](https://youtu.be/Ztr8QvMhqmQ)
+ * [YT - 2018 LLVM Developers’ Meeting: J. McCall “Coroutine Representations and ABIs in LLVM”](https://youtu.be/wyAbV8AM9PM)
 
  */
 
