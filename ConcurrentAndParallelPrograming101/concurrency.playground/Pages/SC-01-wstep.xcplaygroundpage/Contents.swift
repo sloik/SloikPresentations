@@ -55,6 +55,7 @@
  * [YT - 2018 LLVM Developers’ Meeting: J. McCall “Coroutine Representations and ABIs in LLVM”](https://youtu.be/wyAbV8AM9PM)
  * [Detached Tasks in Swift explained with code examples](https://www.avanderlee.com/concurrency/detached-tasks)
  * [Apple - Improving app responsiveness](https://developer.apple.com/documentation/xcode/improving-app-responsiveness)
+ * [SwiftUI's .task modifier](https://alexanderweiss.dev/blog/2023-03-05-swiftui-task-modifier)
 
  */
 
