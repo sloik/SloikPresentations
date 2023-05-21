@@ -2,21 +2,32 @@
 
 /*:
 
-# Swift concurrency
+# Structured Concurrency
 
- > Zapoznaj się w wolnej chwili z [Swift Concurrency – Things They Don’t Tell You](https://wojciechkulik.pl/ios/swift-concurrency-things-they-dont-tell-you). Niestety nie wszystko jest takie łatwe jak w przykładach Apple.
+ ## Zanim zaczniemy...
+
+Żyjemy z nowym językiem od 2014 roku. W tym czasie dużo się zmieniło. W 2016 roku pojawiła się pierwsza propozycja wprowadzenia do języka mechanizmu obsługi współbieżności. W 2021 roku wraz z Swift 5.5 w końcu mamy to w rękach.
+
+ Niestety nie wszystko jest takie piękne i proste jak na prezentacjach WWDC. Z moich doświadczeń na pewno mogę powiedzieć, że nie wolno mieszać "starego świata" z "nowym". Jak zwykle problemy mogą być bardzo subtelne i przez większość czasu "kod działa". Dopiero w momencie gdy zacznie się dziać coś nieoczekiwanego to zaczynamy szukać przyczyny.
+
+ W tej części tego kursu będę omawiać _Structured Concurrency_ bez mieszania z rzeczami jakie już znamy.
+
+ Polecam zapoznać się w wolnej chwili z [Swift Concurrency – Things They Don’t Tell You](https://wojciechkulik.pl/ios/swift-concurrency-things-they-dont-tell-you). Jest to super artykuł pokazujący jakie pułapki czyhają na nas w codziennej pracy z "nowymi zabawkami".
 
 ---
 
- Razem ze Swift 5.5 do języka doszło pojęcie ["structured concurrency"](https://github.com/apple/swift-evolution/blob/main/proposals/0304-structured-concurrency.md).
+ ## Normalny program...
+
+ Razem ze Swift 5.5 do języka doszło pojęcie ["structured concurrency"](https://github.com/apple/swift-evolution/blob/main/proposals/0304-structured-concurrency.md). Co ciekawe nie chodzi w nim o same mechanizmy związane z obsługą współbieżności, ale o sposób w jaki powinniśmy pisać kod aby był on przewidywalny, łatwy do zrozumienia i pozwalający się wydaje zaimplementować.
+
 
  ## Pula wątków
 
- System zarządza pulą wątków. Dzięki czemu nie ma obawy, że powstanie ich za dużo. Nie ma też narzutu związanego z towrzeniem i niszczeniem wątków.
+ System zarządza pulą wątków. Dzięki czemu nie ma obawy, że powstanie ich za dużo. Nie ma też narzutu związanego z tworzeniem i niszczeniem wątków.
 
  ## async await
 
- Nowa ozlocona składnia, która mówi kompilatorowi oraz runtime, że dany kawałek kodu może zostać zatrzymany i wznowiony w przyszłości (Androidowiec w Tobie powinien od razu pomyśleć o corutines).
+ Nowa ozłocona składnia, która mówi kompilatorowi oraz runtime, że dany kawałek kodu może zostać zatrzymany i wznowiony w przyszłości (Androidowiec w Tobie powinien od razu pomyśleć o corutines).
 
  Nieoczekiwanie z nową składnią możemy używać "non escaping closures" i dzięki temu skończyć z martwieniem się o _weak_ referencje do _self_.
 
@@ -56,6 +67,9 @@
  * [Detached Tasks in Swift explained with code examples](https://www.avanderlee.com/concurrency/detached-tasks)
  * [Apple - Improving app responsiveness](https://developer.apple.com/documentation/xcode/improving-app-responsiveness)
  * [SwiftUI's .task modifier](https://alexanderweiss.dev/blog/2023-03-05-swiftui-task-modifier)
+ * [TaskGroup as a workflow design tool](https://trycombine.com/posts/swift-concurrency-task-group-workflow/)
+ * [A crash course of async await (Swift Concurrency) - Shai Mishali - Swift Heroes 2022](https://youtu.be/uWqy5KZXSlA)
+ * [Your Brain 🧠 on Swift Concurrency - iOS Conf SG 2023](https://youtu.be/zgCtube1DSg)
 
  */
 

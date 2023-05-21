@@ -14,6 +14,7 @@
  * [Swift Forums -
  Actor Reentrancy](https://forums.swift.org/t/actor-reentrancy/59484)
  * [Actors can rule your DDD world - Hannes Lowette - NDC Porto 2022](https://youtu.be/WDd1QSZBjHI)
+ * [MainActor usage in Swift explained to dispatch to the main thread](https://www.avanderlee.com/swift/mainactor-dispatch-main-thread)
 
  */
 
