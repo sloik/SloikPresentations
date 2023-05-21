@@ -25,6 +25,10 @@
 
  System zarządza pulą wątków. Dzięki czemu nie ma obawy, że powstanie ich za dużo. Nie ma też narzutu związanego z tworzeniem i niszczeniem wątków.
 
+ Generalnie należy w pewnym sensie *zapomnieć*, że istnieją jakieś wątki. Funkcja/zadanie/task może wystartować na jednym wątku a następnie zostać wznowiona na zupełnie innym. System może też zdecydować, że praca zlecona na _w tle_ zostanie wykonana na głównym wątku. Wszystko zależy od tego co jest bardziej optymalne.
+
+ Detalami zajmiemy się potem. Teraz wystarczy nam taka wiedza a właściwie to, że mamy _zapomnieć_ o wątkach.
+
  ## async await
 
  Nowa ozłocona składnia, która mówi kompilatorowi oraz runtime, że dany kawałek kodu może zostać zatrzymany i wznowiony w przyszłości (Androidowiec w Tobie powinien od razu pomyśleć o corutines).
@@ -33,12 +37,14 @@
 
  ## Structured concurrency
 
- Jedno zadanie może wywołać lawine kolejnych zadań. Czasem jakieś są ważniejsze niż inne. Tak utworzoną hierarchią runtime może _sterować_ i _przepuszczać_ ważniejsze zadania i/lub anulować tą lawine zadań w momencie gdy zadanie _rodzic_ jest anulowane (ponownie Androidowiec w Tobie powinien pomyśleć o corutines).
+ Jedno zadanie może wywołać lawine kolejnych zadań. Czasem jakieś są ważniejsze niż inne. Tak utworzoną hierarchią runtime może _sterować_ i _przepuszczać_ ważniejsze zadania i/lub anulować tą lawinę zadań w momencie gdy zadanie _rodzic_ jest anulowane (ponownie Androidowiec w Tobie powinien pomyśleć o corutines).
 
 
  ## Context aware compilation
 
  Umownie powiedzmy, że to jest _zbiór zasad_ jakich powinniśmy przestrzegać przy pisaniu współbieżnego i asynchronicznego kodu. Kompilator _zna_ te zasady i wykorzystuje je do generowania wydajnego i bezpiecznego kodu. Dodatkowo gdy coś zrobisz potencjalnie niebezpiecznego to program się nie skompiluje!
+
+ To jest jeden z tych sekretnych składników. Przy manualnym zarządzaniu wątkami sytem nie znał ich relacji między sobą. Teraz ją ma i jej używa!
 
  # Links
 
