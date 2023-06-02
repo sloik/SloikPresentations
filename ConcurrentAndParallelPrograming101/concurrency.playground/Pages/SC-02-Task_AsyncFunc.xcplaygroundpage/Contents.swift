@@ -187,7 +187,7 @@ Wywołanie statycznej metody `yield` daje znać systemowi, że może on zawiesi�
 
 ## `cancel`
 
-Z różnych powodów
+Anulowanie zleconej pracy pojawia się bardzo szybko w prawdziwym życiu. Do anulowania zadania służy metoda `cancel`.
  */
 
 
@@ -198,9 +198,18 @@ await run("🚫 cancel") {
     }
 
     t.cancel()
+
+    // make sure that taks finishes before the end of the closure
     await t.value
 }
 
+/*:
+
+ Ręczne anulowanie task-ów nie rozwiązuje problemu co jak wewnątrz tego zadania utworzone zostanie kolejne. Tym problemem (nie tylko) zajmuje się właśnie structured concurrency, które wykorzystuje wiedzę o task-ach potomnych aby je również anulować.
+
+Zanim jednak pójdziemy dalej to zastanowimy się czym jest "structured" w "Structured Concurrency".
+
+ */
 
 
 
