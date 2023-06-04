@@ -207,10 +207,15 @@ await run("🚫 cancel") {
 
  Ręczne anulowanie task-ów nie rozwiązuje problemu co jak wewnątrz tego zadania utworzone zostanie kolejne. Tym problemem (nie tylko) zajmuje się właśnie structured concurrency, które wykorzystuje wiedzę o task-ach potomnych aby je również anulować.
 
-Zanim jednak pójdziemy dalej to zastanowimy się czym jest "structured" w "Structured Concurrency".
+ # Podsumowanie...
+
+ W osobnym filmiku, kiedyś, zamierzam omówić bardziej dokładnie tą cześć "structured" w "structured concurrency".
+
+ Na ten moment będziemy to traktować jako _specjalny sposób_ dzięki któremu kompilator zna relację między poszczególnymi task-ami. Jest to ważne, że dzieje się to w czasie kompilacji a jak wiemy kompilator to jest nasz przyjaciel.
+
+ To nie wszystko co można powiedzieć o Task-ach ale na ten moment wystarczająco aby można było przejść dalej.
 
  */
-
 
 
 print("🏁")

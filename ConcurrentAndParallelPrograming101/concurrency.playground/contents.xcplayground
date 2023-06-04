@@ -19,7 +19,8 @@
         <page name='GCD_04_Dispatch_Once_After'/>
         <page name='SC-01-wstep'/>
         <page name='SC-02-Task_AsyncFunc'/>
+        <page name='SC-03-async-await'/>
+        <page name='SC-30-structured-programming'/>
         <page name='SC-50Actors_MainActor'/>
-        <page name='SC-902-structured-programming'/>
     </pages>
 </playground>
