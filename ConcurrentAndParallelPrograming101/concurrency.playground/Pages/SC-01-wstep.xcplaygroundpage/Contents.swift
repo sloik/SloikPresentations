@@ -48,6 +48,7 @@
 
  # Links
 
+ * [WWDC 2023 - Meet Swift OpenAPI Generator](https://developer.apple.com/wwdc23/10171)
 * [Kodeco - Modern Concurrency: Getting Started](https://www.kodeco.com/28434449-modern-concurrency-getting-started)
  * [Meet Swift Concurrency](https://developer.apple.com/news/?id=2o3euotz)
  * [WWDC22 -Visualize and optimize Swift concurency](https://developer.apple.com/wwdc22/110350)

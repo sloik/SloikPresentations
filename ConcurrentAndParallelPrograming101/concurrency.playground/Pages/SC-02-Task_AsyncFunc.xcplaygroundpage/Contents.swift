@@ -31,7 +31,7 @@ Aby utworzyć task wystarczy skorzystać z init-a który przyjmuje jako argument
 
  */
 
-await run("🥷🏻") {
+await xrun("🥷🏻") {
 
     let t1 = Task {      }
     let t2 = Task { 42   }
@@ -119,7 +119,7 @@ Zanim przejdziemy dalej chciałbym opowiedzieć o jeszcze kilku występujących 
 
  */
 
-await run("🥱 sleep") {
+await xrun("🥱 sleep") {
     print("before")
     try? await Task.sleep(for: .seconds(5))
     print("after")
@@ -136,7 +136,7 @@ Task _biegnie_ do wywołania `sleep` po czym zatrzymuje wykonywanie task-u. Co j
 
   */
 
-await run("👑 value") {
+await xrun("👑 value") {
     let t: Task<Int, Never> = Task {
         try? await Task.sleep(for: .seconds(1))
         return 42
@@ -154,7 +154,7 @@ await run("👑 value") {
  To jest sposób aby wymusić _synchronizację_ takiego unstructured Task-a. Bez tego `await` na `value` funkcja (task dla tej funkcji) może zakończyć się wcześniej.
  */
 
-await run("🐇 unstructured task") {
+await xrun("🐇 unstructured task") {
     Task {
         try? await Task.sleep(for: .seconds(1))
         print("🐢 started in unstructured task example")
@@ -171,7 +171,7 @@ Bycie dobry obywatelem jest zawsze spoko. Za pomocą metody `yield` aktualnie ur
 
  */
 
-await run("🪨 yield") {
+await xrun("🪨 yield") {
 
     for _ in 1...5 {
         // hard work
@@ -191,7 +191,7 @@ Anulowanie zleconej pracy pojawia się bardzo szybko w prawdziwym życiu. Do anu
  */
 
 
-await run("🚫 cancel") {
+await xrun("🚫 cancel") {
 
     let t = Task {
         try? await Task.sleep(for: .seconds(5))
@@ -207,6 +207,129 @@ await run("🚫 cancel") {
 
  Ręczne anulowanie task-ów nie rozwiązuje problemu co jak wewnątrz tego zadania utworzone zostanie kolejne. Tym problemem (nie tylko) zajmuje się właśnie structured concurrency, które wykorzystuje wiedzę o task-ach potomnych aby je również anulować.
 
+ Uchylając rąbka tajemnicy powiem, że task-i posiadają coś takiego jak _task local values_. W pewnym sensie można o tym myśleć jak o _zmiennych statycznych_ lub trochę jak o _environment_ z SwiftUI. Są one dostępne z hierarchii task-ów ale o nich opowiem już gdy zapoznamy się lepiej z samym structured concurrency.
+
+ ## `isCanceled` i `checkCancellation`
+
+ Podobnie jak w starym świecie nie wystarczy powiedzieć, że tak jest anulowany. Trzeba jeszcze gdzieś to sprawdzić i przerwać pracę.
+
+ Zaraz zaraz, przecież ostatni przykład nie trwał 5 sekund. Dlaczego?
+
+ Napiszę ten sam przykład tylko tym razem troszeczkę inaczej:
+
+ */
+
+await xrun("🏏 cancel") {
+
+    let t = Task {
+        do {
+            try await Task.sleep(for: .seconds(5))
+        } catch {
+            print("Error:", type(of: error), error)
+        }
+    }
+
+    t.cancel()
+
+    // make sure that taks finishes before the end of the closure
+    await t.value
+}
+
+/*:
+
+ Jak widać trikiem okazała się obsługa błędu. Metoda sleep jest w stanie _dowiedzieć się_, że znajduje się w hierarchii która jest anulowana i w tym momencie rzuca błąd. Można to łatwo sprawdzić zamieniając wywołanie metody `sleep` na inną która *nie współpracuje* z systemem anulowania.
+
+ */
+
+func block(for duration: TimeInterval) async {
+    let start = Date()
+    while Date().timeIntervalSince(start) < duration {
+        // do nothing
+    }
+}
+
+await xrun("🧱 cancel -- blocking") {
+
+    let t = Task {
+        await block(for: 5)
+    }
+
+    t.cancel()
+
+    // make sure that taks finishes before the end of the closure
+    await t.value
+}
+
+/*:
+Funkcja `block(for:)` ma pętlę która nic nie robi. Natomiast warunkiem jest to, że ma wykonywać tą pętlę przez określony czas. Ewidentnie widać że czas wykonania tego task-a jest w okolicach 5s. To znaczy, że mimo iż nie chcę tej pracy wykonywać to i tak ona się dzieje.
+
+ Jak możemy temu zaradzić?
+
+ Nie ma jednej dobrej metody. Wszystko zależy od tego co robimy. Czasem można rzucić błędem, innym razem zwrócić `nil`/`.none`. Jeszcze innym zwrócić do tej pory wykonaną pracę w nadziei, że jednak do czegoś się jeszcze przyda.
+
+ */
+
+func cooperativeBlock(for duration: TimeInterval) async throws {
+    let start = Date()
+    while Date().timeIntervalSince(start) < duration {
+
+        print(Date.now, Task.isCancelled)
+
+        if Task.isCancelled {
+            throw CancellationError()
+        }
+    }
+}
+
+await xrun("👫 cancel -- cooperative") {
+
+    let t = Task {
+        try? await cooperativeBlock(for: 5)
+    }
+
+    t.cancel()
+
+    // make sure that taks finishes before the end of the closure
+    await t.value
+}
+
+/*:
+Funkcja `cooperativeBlock(for:)` tym razem jest dobrym obywatelem. W kluczowym momencie sprawdza czy praca dalej jest potrzebna. Jeżeli nie (taks został anulowany) to rzuca błędem. Sprawdzenie tego statusu odbywa się za pomocą statycznego property `isCancelled`.
+
+ Jeszcze raz powtórzę. Nie trzeba w tym miejscu rzucać. Można zwrócić częściowy rezultat, .none lub dać zwykłego return-a. Wszystko zależy od tego _o co chodzi_ w zadaniu.
+
+Jest jeszcze jedna opcja na anulowanie zadania. Tym razem za pomocą metody `checkCancellation`.
+
+ */
+
+func cooperativeBlock2(for duration: TimeInterval) async throws {
+    let start = Date()
+    while Date().timeIntervalSince(start) < duration {
+        print(Date.now, Task.isCancelled)
+
+        try Task.checkCancellation()
+    }
+}
+
+await run("🌺 cancel -- cooperative2") {
+
+    let t = Task {
+        do {
+            try await cooperativeBlock2(for: 5)
+        } catch {
+            print("Error:", type(of: error), error)
+        }
+    }
+
+    t.cancel()
+
+    // make sure that taks finishes before the end of the closure
+    await t.value
+}
+
+/*:
+Metoda `checkCancellation` zawsze rzuca instancję `CancellationError`. Jeżeli nie potrzebujemy przekazywać dodatkowych informacji o błędzie to można mamy wszystko.
+
  # Podsumowanie...
 
  W osobnym filmiku, kiedyś, zamierzam omówić bardziej dokładnie tą cześć "structured" w "structured concurrency".
@@ -214,6 +337,10 @@ await run("🚫 cancel") {
  Na ten moment będziemy to traktować jako _specjalny sposób_ dzięki któremu kompilator zna relację między poszczególnymi task-ami. Jest to ważne, że dzieje się to w czasie kompilacji a jak wiemy kompilator to jest nasz przyjaciel.
 
  To nie wszystko co można powiedzieć o Task-ach ale na ten moment wystarczająco aby można było przejść dalej.
+
+ # Linki
+
+ * [WWDC'23 - Beyond the basics of structured concurrency](https://developer.apple.com/wwdc23/10170)
 
  */
 
