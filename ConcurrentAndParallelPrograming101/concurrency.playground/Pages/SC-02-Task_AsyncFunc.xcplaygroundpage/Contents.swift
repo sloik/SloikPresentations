@@ -126,6 +126,8 @@ await run("🫏 async in async") {
         await someAsync2()
         await someAsync3()
     }
+
+    await multipleAsyncCalls()
 }
 
 /*:
@@ -339,7 +341,7 @@ func cooperativeBlock2(for duration: TimeInterval) async throws {
     }
 }
 
-await run("🌺 cancel -- cooperative2") {
+await xrun("🌺 cancel -- cooperative2") {
 
     let t = Task {
         do {
