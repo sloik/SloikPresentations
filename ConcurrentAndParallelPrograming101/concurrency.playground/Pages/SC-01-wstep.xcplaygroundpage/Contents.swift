@@ -14,6 +14,8 @@
 
  Polecam zapoznać się w wolnej chwili z [Swift Concurrency – Things They Don’t Tell You](https://wojciechkulik.pl/ios/swift-concurrency-things-they-dont-tell-you). Jest to super artykuł pokazujący jakie pułapki czyhają na nas w codziennej pracy z "nowymi zabawkami".
 
+ Niestety pisanie testów dla kodu używającego async/await nie jest proste. Czasem wręcz niemożliwe. Ciekawskich odsyłam do tego wątku na [swift forum - Reliably testing code that adopts Swift Concurrency?](https://forums.swift.org/t/reliably-testing-code-that-adopts-swift-concurrency/57304) oraz do [odcinka pointfree #238 - Reliable Async Tests: The Problem](https://www.pointfree.co/episodes/ep238-reliable-async-tests-the-problem).
+
 ---
 
  ## Normalny program...
