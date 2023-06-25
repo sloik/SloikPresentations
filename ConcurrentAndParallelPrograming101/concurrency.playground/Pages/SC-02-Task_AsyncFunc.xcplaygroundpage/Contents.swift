@@ -182,7 +182,7 @@ await xrun("👑 value") {
  To jest sposób aby wymusić _synchronizację_ takiego unstructured Task-a. Bez tego `await` na `value` funkcja (task dla tej funkcji) może zakończyć się wcześniej.
  */
 
-await xrun("🐇 unstructured task") {
+await xrun("🐇 unstructured and unmanaged task") {
     Task {
         try? await Task.sleep(for: .seconds(1))
         print("🐢 started in unstructured task example")
