@@ -177,7 +177,7 @@ await xrun("👑 value") {
 
 /*:
 
- W miejscu użycia `value` task zaczeka (tak w którym to zostało zawołane) na zakończenie task-a potomnego.
+ W miejscu użycia `value` task zaczeka (kompilator wymusi użycie await) na zakończenie task-a potomnego.
 
  To jest sposób aby wymusić _synchronizację_ takiego unstructured Task-a. Bez tego `await` na `value` funkcja (task dla tej funkcji) może zakończyć się wcześniej.
  */
