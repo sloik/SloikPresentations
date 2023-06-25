@@ -48,13 +48,15 @@ await xrun("🥷🏻") {
 
 ## Task-i Potomne w Structured Concurrency
 
- Asynchroniczna funkcja może utworzyć nowy task natomiast domyślnie jest tworzony gdy funkcja jest uruchamiana. Utworzony task dziedziczy niektóre informacje od swojego rodzica (np. priorytet). Task dziecko może być uruchomiony równolegle z rodzicem ale rodzić zakończy się dopiero gdy wszystkie jego dzieci zakończą pracę.
+ Asynchroniczna funkcja może utworzyć nowy task. Utworzony task dziedziczy niektóre informacje od swojego rodzica (np. priorytet). Task dziecko może być uruchomiony równolegle z rodzicem ale rodzić zakończy się dopiero gdy wszystkie jego dzieci zakończą pracę.
 
- Innymi słowy. Asynchroniczna funkcja, która utworzyła task-i potomne nie _wyjdzie_ (zakończy swego działania) do momentu aż wszystkie task-i potomne (oraz ich dzieci) nie zakończą swojego działania.
+ Innymi słowy. Asynchroniczna funkcja, która utworzyła task-i potomne (structured) nie _wyjdzie_ (zakończy swego działania) do momentu aż wszystkie task-i potomne (oraz ich dzieci) nie zakończą swojego działania.
+
+ > W tym momencie zboczymy trochę z task-ów a skupimy się na dwóch nowych słowach kluczowych. Spokojnie zaraz wrócimy do Task-ów.
 
  # Asynchroniczna funkcja - `async` / `await`
 
-Aby oznaczyć, że funkcja *może* być asynchroniczna do jej definicji przed zwracanym typem dodajemy słowo kluczowe `async`.
+Aby oznaczyć, że funkcja *może* wykonywać asynchroniczny kod, do jej definicji przed zwracanym typem dodajemy słowo kluczowe `async`. Z punktu widzenia kompilatora już w tym momencie jest asynchroniczna i będzie nas pilnować przy każdym jej wywołaniu.
 
  */
 
@@ -83,9 +85,7 @@ await asynchronousFunction()
 /*:
 Kiedyś w tej serii mam nadzieje dotrzeć do momentu aby szczegółowo opowiedzieć jak działają kontynuacje. Bo to co się dzieje w tym momencie może być bardziej zaskakujące niż się wydaje.
 
- Nie wdając się w szczegóły _jak_ to chwili wywołania asynchronicznej funkcji jest tworzony nowy task dla tej funkcji. Oba task-i mogą być uruchomione równolegle ale rodzic musi zaczekać aż wszystkie task-i potomne się zakończą.
-
-Co jest dla nas ważne w tym momencie to to, że kompilator nam patrzy na ręce i jest w stanie _rozumować_ o współbieżnym kodzie.
+ Każda asynchroniczna funkcja jest uruchomiona _wewnątrz_ jakiegoś task-a.
 
  ## `async throws`
 
@@ -108,6 +108,34 @@ func asyncThrowingFunctionDemo() async {
 Oczywiście nigdzie tej funkcji nie wywołuje ale kod się kompiluje a to znaczy, że jest zgodny z zasadami structured concurrency!
 
  Zwróć uwagę, że słowa kluczowe przy wywołaniu są tak jakby _odwrócone_. Podczas gdy w definicji najpierw mówimy, że kod jest asynchroniczny a potem, że może rzucić błąd. Tak przy wywołaniu najpierw mówimy, że kod może rzucić błąd a potem jest asynchroniczny. Dla jednych jest to naturalne dla innych mniej. Natomiast po paru dniach wchodzi w krew 😅
+
+ ## Wywoływanie większej ilości asynchronicznych funkcji
+
+ Co się dzieje w momencie gdy asynchroniczna funkcja wywołuje inne asynchroniczne funkcje? Zobaczmy to na przykładzie:
+
+ */
+
+await run("🫏 async in async") {
+
+    func someAsync1() async { print(#function) }
+    func someAsync2() async { print(#function) }
+    func someAsync3() async { print(#function) }
+    
+    func multipleAsyncCalls() async {
+        await someAsync1()
+        await someAsync2()
+        await someAsync3()
+    }
+}
+
+/*:
+
+Zakładając, że funkcje `someAsync1|2|3` nie tworzą żadnych task-ów (korzystając z API do structured concurrency) to ich wykonanie wygląda dość standardowo.
+
+ Z punktu widzenia `multipleAsyncCalls` nie ma żadnej asynchroniczności. Kolejna linijka jest wykonana w momencie gdy cała praca w poprzedniej jest wykonana.
+
+ Ważne jest aby w tej sytuacji rozróżnić dwie rzeczy. Jedna to, że funkcja jest zawieszona i w pewnym sensie czeka. Natomiast task na którym jest uruchomiona zajmuje się wywołaniem następnych funkcji. No chyba, że akurat system uznał, że można go na zawiesić i dać szansę innym.
+
 
  # Co jeszcze można zrobić z Task-iem
 
