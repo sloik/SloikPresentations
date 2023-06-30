@@ -122,7 +122,7 @@ Kolejność słów kluczowych jest ważna. Jestem pewien, że po kilku dniach p
 
 ## Wywołanie funkcji async
 
-Aby wywołać tą funkcje oczywiście będzie potrzebny asynchroniczny kontekst. Tym razem użyje do tego asynchronicznej funkcji. Można też taki kontekst stworzyć tworząc task
+Aby wywołać tą funkcje oczywiście będzie potrzebny asynchroniczny kontekst. Tym razem użyje do tego asynchronicznej funkcji. Można też taki kontekst stworzyć tworząc task (jak wyżej) lub skorzystać w SwiftUI z modyfikatora `task`.
  */
 
 func asyncThrowingFunctionDemo() async {
