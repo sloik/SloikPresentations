@@ -9,7 +9,7 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
 /*:
 
- # ✓ Task
+ # ✓ Task i asynchroniczne funkcje
 
  Task jest podstawowym pojęciem w Structured Concurrency. Jest tym dla asynchronicznych funkcji czym wątki dla synchronicznych funkcji.
 
@@ -17,7 +17,7 @@ Co trzeba o nim wiedzieć:
 
  * każda asynchroniczna funkcja jest uruchomiona _wewnątrz_ jakiegoś task-u.
  * task uruchamia tylko jedną funkcję na raz; pojedynczy task nie jest współbieżny
- * wszystkie wywołane funkcje async w tym task-u są uruchomione na tym samym task-u i wracają na ten sam task
+ * wszystkie wywołane funkcje async w tym task-u są uruchomione na tym samym task-u i wracają na ten sam task (nie mylić z wątkiem!)
 
  Task może być w jednym z trzech stanów:
 
@@ -25,9 +25,15 @@ Co trzeba o nim wiedzieć:
  * running
  * completed
 
+ ## Relacja Task-a z wątkami
+
+    Task jest abstrakcją która może być uruchomiona na dowolnym wątku. Wątek na którym jest uruchomiony task może się zmieniać w czasie jego życia. Task może być uruchomiony na jednym wątku, zawieszony, a następnie wznowiony na innym wątku. Dzięki temu system optymalnie może wykorzystywać zasoby i nie blokować żadnego wątku.
+
+    Z takim modelem wiąże się pewna niedogodność. Otóż świat zastany po zawieszeniu może być zupełnie inny niż przed zawieszeniem. Dlatego jeżeli kod ma takie punkty to wszelkiego rodzaju sprawdzenia/guard-y/walidacje należy wykonać jeszcze raz.
+
  ## Tworzenie Task-u
 
-Aby utworzyć task wystarczy skorzystać z init-a który przyjmuje jako argument closure do wykonania.
+Aby utworzyć task wystarczy skorzystać z init-a który przyjmuje jako argument closure do wykonania (operation).
 
  */
 
@@ -37,6 +43,8 @@ await xrun("🥷🏻") {
     let t2 = Task { 42   }
     let t3 = Task { "42" }
 
+    Task.detached(priority: .none, operation: {})
+
     print(t1, t2, t3, separator: "\n")
 }
 
@@ -45,6 +53,10 @@ await xrun("🥷🏻") {
  > Tak utworzone Task-i są *unstructured*. Dokładniej o tym opowiem później.
 
  Analizując wynik z konsoli widać, że task posiada dwa typy generyczne. Możemy jeszcze skoczyć do jego deklaracji i zobaczymy, że pierwszy z nich oznacza typ jaki jest zwracany z task-u gdy ten się _powiedzie_. Z przykładów mamy odpowiednio typy Void, Int oraz String. Drugi z nich mówi jakiego typu błąd może być rzucony w trakcie działania task-a.
+
+Warto wiedzieć, że tak utworzony task dziedziczy priorytet oraz kontekst aktora z kodu który go utworzył. Jeżeli tego nie chcemy to jest możliwość utworzenia _czystego_ task-a za pomocą statycznej funkcji `Task.detached` gdzie można sobie wybrać odpowiednią wersje.
+
+🤓 Jeszcze jedna rzecz o której trzeba pamiętać. Closure w task-u tak utworzonym jak w przykładach silnie łapie referencje do `self`. Ma to fajny efekt, że w ciele closure nie trzeba pisać `self` ale trzeba pamiętać o tym kto ma referencje do kogo. Task.detached wymaga pisania `self`. 
 
 ## Task-i Potomne w Structured Concurrency
 
@@ -63,7 +75,18 @@ Aby oznaczyć, że funkcja *może* wykonywać asynchroniczny kod, do jej definic
 func asynchronousFunction() async {}
 
 /*:
-Co ciekawe funkcja nie musi wykonywać asynchronicznego kodu aby można było ją oznaczyć jako asynchroniczną. Jest to identyczne zachowanie jak ze słowem kluczowym `throws`.
+
+ Można o tym myśleć że typ tej funkcji to `() -> async Void`. Łatwo się też o tym przekonać. Poniższy kod się nie kompiluje (trzeba odkomentować linijkę):
+
+ */
+
+// 💥: Invalid conversion from 'async' function of type '() async -> ()' to synchronous function type '() -> Void'
+// let referenceToVoidFunction: () -> Void = asynchronousFunction
+
+ /*:
+
+ Sama funkcja nie musi wykonywać asynchronicznego kodu aby można było ją oznaczyć jako asynchroniczną. Jest to identyczne zachowanie jak ze słowem kluczowym `throws`.
+
  */
 
 func throwingFunction() throws {}
@@ -97,7 +120,9 @@ func asyncThrowingFunction() async throws {}
 /*:
 Kolejność słów kluczowych jest ważna. Jestem pewien, że po kilku dniach poprawiania błędów kompilacji sama też wejdzie w krew.
 
-Aby wywołać tą funkcje oczywiście będzie potrzebny asynchroniczny kontekst. Tym razem użyje do tego asynchronicznej funkcji.
+## Wywołanie funkcji async
+
+Aby wywołać tą funkcje oczywiście będzie potrzebny asynchroniczny kontekst. Tym razem użyje do tego asynchronicznej funkcji. Można też taki kontekst stworzyć tworząc task
  */
 
 func asyncThrowingFunctionDemo() async {
@@ -109,18 +134,22 @@ Oczywiście nigdzie tej funkcji nie wywołuje ale kod się kompiluje a to znaczy
 
  Zwróć uwagę, że słowa kluczowe przy wywołaniu są tak jakby _odwrócone_. Podczas gdy w definicji najpierw mówimy, że kod jest asynchroniczny a potem, że może rzucić błąd. Tak przy wywołaniu najpierw mówimy, że kod może rzucić błąd a potem jest asynchroniczny. Dla jednych jest to naturalne dla innych mniej. Natomiast po paru dniach wchodzi w krew 😅
 
+ Samo miejsce wywołania jest oznaczone słowem kluczowym `await`. W pewnym sensie `async` jest dla kompilatora a `await` dla programisty i kompilatora. Kompilator wie, że w tym miejscu **może** (nie musi!) utworzyć _punkt zawieszenia funkcji_ do którego wróci gdy asynchroniczna praca zostanie wykonana. Dla programisty aby podobnie jak z `try` widział czytelnie w kodzie miejsca gdzie program może zacząć asynchroniczną prace.
+
+ Dzięki parze `async` i `await` kompilator wie czy jesteśmy w miejscu gdzie asynchroniczna praca może zostać wykonana.
+
  ## Wywoływanie większej ilości asynchronicznych funkcji
 
  Co się dzieje w momencie gdy asynchroniczna funkcja wywołuje inne asynchroniczne funkcje? Zobaczmy to na przykładzie:
 
  */
 
-await run("🫏 async in async") {
+await xrun("🫏 async in async") {
 
     func someAsync1() async { print(#function) }
     func someAsync2() async { print(#function) }
     func someAsync3() async { print(#function) }
-    
+
     func multipleAsyncCalls() async {
         await someAsync1()
         await someAsync2()
