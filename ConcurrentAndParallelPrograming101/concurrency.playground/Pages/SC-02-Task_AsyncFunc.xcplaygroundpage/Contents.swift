@@ -31,6 +31,8 @@ Co trzeba o nim wiedzieć:
 
     Z takim modelem wiąże się pewna niedogodność. Otóż świat zastany po zawieszeniu może być zupełnie inny niż przed zawieszeniem. Dlatego jeżeli kod ma takie punkty to wszelkiego rodzaju sprawdzenia/guard-y/walidacje należy wykonać jeszcze raz.
 
+ W przeciwieństwie do wątków Task-i są tanie. W gruncie rzeczy można tworzyć ich dużą ilość (dziesiątki tysięcy). System zajmie się tym aby odpowiednio nimi zarządzać oraz tym aby wszystkie wątki miały zajęcie i aby nie było ich za dużo. W praktyce okazuje się, że jest tyle uruchomionych task-ów ile urządzenie ma rdzeni (do każdego rdzenia jest przypisany wątek).
+
  ## Tworzenie Task-u
 
 Aby utworzyć task wystarczy skorzystać z init-a który przyjmuje jako argument closure do wykonania (operation).
@@ -43,9 +45,12 @@ await xrun("🥷🏻") {
     let t2 = Task { 42   }
     let t3 = Task { "42" }
 
+    func ups() throws -> Int { 69 }
+    let t4 = Task { try ups() }
+
     Task.detached(priority: .none, operation: {})
 
-    print(t1, t2, t3, separator: "\n")
+    print(t1, t2, t3, t4, separator: "\n")
 }
 
 /*:
@@ -54,9 +59,15 @@ await xrun("🥷🏻") {
 
  Analizując wynik z konsoli widać, że task posiada dwa typy generyczne. Możemy jeszcze skoczyć do jego deklaracji i zobaczymy, że pierwszy z nich oznacza typ jaki jest zwracany z task-u gdy ten się _powiedzie_. Z przykładów mamy odpowiednio typy Void, Int oraz String. Drugi z nich mówi jakiego typu błąd może być rzucony w trakcie działania task-a.
 
-Warto wiedzieć, że tak utworzony task dziedziczy priorytet oraz kontekst aktora z kodu który go utworzył. Jeżeli tego nie chcemy to jest możliwość utworzenia _czystego_ task-a za pomocą statycznej funkcji `Task.detached` gdzie można sobie wybrać odpowiednią wersje.
+Warto wiedzieć, że tak utworzony task dziedziczy priorytet, kontekst aktora z kodu który go utworzył (np. MainActor) oraz druga rzecz to _task local values_. Jeżeli tego nie chcemy to jest możliwość utworzenia _czystego_ task-a za pomocą statycznej funkcji `Task.detached` gdzie można sobie wybrać odpowiednią wersje.
 
-🤓 Jeszcze jedna rzecz o której trzeba pamiętać. Closure w task-u tak utworzonym jak w przykładach silnie łapie referencje do `self`. Ma to fajny efekt, że w ciele closure nie trzeba pisać `self` ale trzeba pamiętać o tym kto ma referencje do kogo. Task.detached wymaga pisania `self`. 
+🤓 Jeszcze jedna rzecz o której trzeba pamiętać. Closure w task-u tak utworzonym jak w przykładach silnie łapie referencje do `self`. Ma to fajny efekt, że w ciele closure nie trzeba pisać `self`. Na czas życia tego task-a jest tworzony retain cycle, który **po zakończeniu całej pracy** jest przerywany. Może być taka sytuacja, że ten blok trzyma instancję `self` do zakończenia pracy. Oczywiście określenie w capture list [weak self] przywraca znany świat z closure-s (ale jeżeli na samym początku i tak robisz taniec `guard let self else { return }` to nie ma sensu dawać self weak). `Task.detached` nie łapie domyślnie `self`.
+
+ 🤓 Ciekawym przypadkiem jest też task `t4`. Wywołuje w nim rzucającą funkcję `ups` a nie ma potrzeby owijania jej w blok `do catch`. Task po cichu ignoruje wszelkie błędy rzucone w tym closure. Ciężko powiedzieć czy to jest ficzer czy nie. Z jednej strony jeżeli ktoś nie chce *handlować* błędu to nie musi tego robić a z drugiej nie wiemy czy zostało to zrobione specjalnie czy po prostu zapomniane. Jak coś to możemy dopisać block `do catch`.
+
+## Po co tworzyć task-i?
+
+ Odpowiedz pierwsza jest wręcz prostacka. Ponieważ inaczej kod się nie skompiluje. Mniej prostacka jest taka, że nie jesteśmy w _asynchronicznym kontekście_ i musimy go jakoś utworzyć. Bardziej praktyczna to najzwyczajniej w świecie chcemy aby jakaś praca wykonała się równolegle/współbieżnie z inną.
 
 ## Task-i Potomne w Structured Concurrency
 
@@ -136,7 +147,9 @@ Oczywiście nigdzie tej funkcji nie wywołuje ale kod się kompiluje a to znaczy
 
  Samo miejsce wywołania jest oznaczone słowem kluczowym `await`. W pewnym sensie `async` jest dla kompilatora a `await` dla programisty i kompilatora. Kompilator wie, że w tym miejscu **może** (nie musi!) utworzyć _punkt zawieszenia funkcji_ do którego wróci gdy asynchroniczna praca zostanie wykonana. Dla programisty aby podobnie jak z `try` widział czytelnie w kodzie miejsca gdzie program może zacząć asynchroniczną prace.
 
- Dzięki parze `async` i `await` kompilator wie czy jesteśmy w miejscu gdzie asynchroniczna praca może zostać wykonana.
+ Dzięki parze `async` i `await` kompilator wie czy jesteśmy w miejscu gdzie asynchroniczna praca może zostać wykonana. Tym samym **każdy await** jest miejscem gdzie task może przestać być wykonywany. Nazwijmy to *zdjęty* z wątku tak aby inne task-i mogły iść do przodu ze swoją pracą.
+
+ Gdy funkcja asynchroniczna jest uruchamiana to domyślnie (gdy nie jest przypisana do żadnego aktora [o nich jeszcze powiemy]) jest uruchamiana na domyślnym `executor`-ze. Executor odpowiada za przyjmowanie `job`ów i ich uruchamianie. I tak np. jeden task może być uruchamiany i zawieszany wiele razy będąc częścią jednego job-a. Detalami jeszcze kiedyś się zajmiemy ale też zachęcam do poszukania więcej informacji we własnym zakresie.
 
  ## Wywoływanie większej ilości asynchronicznych funkcji
 
@@ -188,6 +201,8 @@ await xrun("🥱 sleep") {
  /*:
 
 Task _biegnie_ do wywołania `sleep` po czym zatrzymuje wykonywanie task-u. Co jest bardzo ważne wątek nie jest blokowany i może w tym czasie uruchomić inne task-i. Ogólnie to mógłbym powiedzieć, że należy przestać myśleć o wątkach (co jest delikatnym uproszczeniem). Następnie po określonym czasie task _biegnie_ dalej.
+
+W sytuacji gdy jakiś kod uśpi wątek to task też jest zatrzymany (nie wykonuje pracy). Przypominam, że pod spodem to na wątku się wykonuje cała praca. Task też nie "przeskakuje" na inny wątek gdy ten jest uśpiony.
 
 ## `value`
 
@@ -387,7 +402,19 @@ await xrun("🌺 cancel -- cooperative2") {
 }
 
 /*:
-Metoda `checkCancellation` zawsze rzuca instancję `CancellationError`. Jeżeli nie potrzebujemy przekazywać dodatkowych informacji o błędzie to można mamy wszystko.
+Metoda `checkCancellation` zawsze rzuca instancję `CancellationError`. Jeżeli nie potrzebujemy przekazywać dodatkowych informacji o błędzie to mamy wszystko.
+
+ Na początku powiedziałem, że w sumie można tworzyć tyle task-ów ile chcemy. Jednak ten przykład powinien dać nam do myślenia. Co jak moje wszystkie zadania będą trwać bardzo długo? Problemu nie będzie jeżeli będziemy w kluczowych momentach sprawdzać czy task jest anulowany i czy możemy dać szansę innym (za pomocą metody yield). W przeciwnym wypadku cała praca musi być skończona zanim system zleci wykonanie kolejnego task-u.
+
+ */
+
+/*:
+ 
+## Task Local Values
+
+ */
+
+/*:
 
  # Podsumowanie...
 
@@ -400,6 +427,7 @@ Metoda `checkCancellation` zawsze rzuca instancję `CancellationError`. Jeżeli 
  # Linki
 
  * [WWDC'23 - Beyond the basics of structured concurrency](https://developer.apple.com/wwdc23/10170)
+ * [WWDC Notes: Swift concurrency: Behind the scenes](https://www.donnywals.com/wwdc-notes-swift-concurrency-behind-the-scenes/)
 
  */
 
