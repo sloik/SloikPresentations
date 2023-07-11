@@ -3,7 +3,7 @@
 import Foundation
 import PlaygroundSupport
 import SwiftUI
-import UIKit
+
 PlaygroundPage.current.needsIndefiniteExecution = true
 
 swift_task_enqueueGlobal_hook = { job, _ in
