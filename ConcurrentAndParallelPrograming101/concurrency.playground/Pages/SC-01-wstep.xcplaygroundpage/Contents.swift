@@ -1,4 +1,4 @@
-//: [Previous](@previous)
+//:[Spis Treści](Spis_Tresci) | [Wstecz](@previous) | [Następna strona](@next)
 
 /*:
 
@@ -83,4 +83,4 @@
  */
 
 
-//: [Next](@next)
+//:[Spis Treści](Spis_Tresci) | [Wstecz](@previous) | [Następna strona](@next)

@@ -1,5 +1,10 @@
 /*:
  # **Spis Treści**
+
+
+ **[🎥 YT playlista - CAP - Concurrent adn Parallel](https://www.youtube.com/playlist?list=PLk_5PV9LrXp8bDIr1aIbeevIKZzxndGLW)**
+
+
  > # Rozdział 1 - NSThread
  * ## [Tworzenie Watku](NSThread_01)
  * ## [Wiecej Watkow](NSThread_02)
@@ -19,4 +24,7 @@
  * ## [Dispatch Groups](GCD_02_Dispatch_Groups)
  * ## [Problemy / Data Race / Deadlock](GCD_03_Dispatch_Groups_Barrier)
  * ## [Raz i Po / dispatch_once / dispatch_after](GCD_04_Dispatch_Once_After)
+ > # Rozdział 5 - Async/Await i Structured Concurrency
+ * ## [Słowem wstępu](SC-01-wstep)
+ * ## [Task-i, funkcje asynchroniczne oraz async/await](SC-02-Task_AsyncFunc)
 */

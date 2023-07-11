@@ -1,4 +1,4 @@
-//: [Previous](@previous)
+//:[Spis Treści](Spis_Tresci) | [Wstecz](@previous) | [Następna strona](@next)
 
 import Foundation
 import PlaygroundSupport
@@ -424,6 +424,6 @@ Metoda `checkCancellation` zawsze rzuca instancję `CancellationError`. Jeżeli 
 
  */
 
-
 print("🏁")
 
+//:[Spis Treści](Spis_Tresci) | [Wstecz](@previous) | [Następna strona](@next)
