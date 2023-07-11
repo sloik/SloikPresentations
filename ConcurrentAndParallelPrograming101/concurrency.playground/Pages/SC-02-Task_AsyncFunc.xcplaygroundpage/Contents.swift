@@ -42,7 +42,7 @@ Aby utworzyć task wystarczy skorzystać z init-a który przyjmuje jako argument
 
  */
 
-await xrun("🥷🏻") {
+await run("🥷🏻") {
 
     let t1 = Task {      }
     let t2 = Task { 42   }
@@ -160,7 +160,7 @@ Oczywiście nigdzie tej funkcji nie wywołuje ale kod się kompiluje a to znaczy
 
  */
 
-await xrun("🫏 async in async") {
+await run("🫏 async in async") {
 
     func someAsync1() async { print(#function) }
     func someAsync2() async { print(#function) }
@@ -194,7 +194,7 @@ Zanim przejdziemy dalej chciałbym opowiedzieć o jeszcze kilku występujących 
 
  */
 
-await xrun("🥱 sleep") {
+await run("🥱 sleep") {
     print("before")
     try? await Task.sleep(for: .seconds(5))
     print("after")
@@ -213,7 +213,7 @@ W sytuacji gdy jakiś kod uśpi wątek to task też jest zatrzymany (nie wykonuj
 
   */
 
-await xrun("👑 value") {
+await run("👑 value") {
     let t: Task<Int, Never> = Task {
         try? await Task.sleep(for: .seconds(1))
         return 42
@@ -231,7 +231,7 @@ await xrun("👑 value") {
  To jest sposób aby wymusić _synchronizację_ takiego unstructured Task-a. Bez tego `await` na `value` funkcja (task dla tej funkcji) może zakończyć się wcześniej.
  */
 
-await xrun("🐇 unstructured and unmanaged task") {
+await run("🐇 unstructured and unmanaged task") {
     Task {
         try? await Task.sleep(for: .seconds(1))
         print("🐢 started in unstructured task example")
@@ -248,7 +248,7 @@ Bycie dobry obywatelem jest zawsze spoko. Za pomocą metody `yield` aktualnie ur
 
  */
 
-await xrun("🪨 yield") {
+await run("🪨 yield") {
 
     for _ in 1...5 {
         // hard work
@@ -268,7 +268,7 @@ Anulowanie zleconej pracy pojawia się bardzo szybko w prawdziwym życiu. Do anu
  */
 
 
-await xrun("🚫 cancel") {
+await run("🚫 cancel") {
 
     let t = Task {
         try? await Task.sleep(for: .seconds(5))
@@ -296,7 +296,7 @@ await xrun("🚫 cancel") {
 
  */
 
-await xrun("🏏 cancel") {
+await run("🏏 cancel") {
 
     let t = Task {
         do {
@@ -325,7 +325,7 @@ func block(for duration: TimeInterval) async {
     }
 }
 
-await xrun("🧱 cancel -- blocking") {
+await run("🧱 cancel -- blocking") {
 
     let t = Task {
         await block(for: 5)
@@ -358,7 +358,7 @@ func cooperativeBlock(for duration: TimeInterval) async throws {
     }
 }
 
-await xrun("👫 cancel -- cooperative") {
+await run("👫 cancel -- cooperative") {
 
     let t = Task {
         try? await cooperativeBlock(for: 5)
@@ -388,7 +388,7 @@ func cooperativeBlock2(for duration: TimeInterval) async throws {
     }
 }
 
-await xrun("🌺 cancel -- cooperative2") {
+await run("🌺 cancel -- cooperative2") {
 
     let t = Task {
         do {
@@ -408,16 +408,6 @@ await xrun("🌺 cancel -- cooperative2") {
 Metoda `checkCancellation` zawsze rzuca instancję `CancellationError`. Jeżeli nie potrzebujemy przekazywać dodatkowych informacji o błędzie to mamy wszystko.
 
  Na początku powiedziałem, że w sumie można tworzyć tyle task-ów ile chcemy. Jednak ten przykład powinien dać nam do myślenia. Co jak moje wszystkie zadania będą trwać bardzo długo? Problemu nie będzie jeżeli będziemy w kluczowych momentach sprawdzać czy task jest anulowany i czy możemy dać szansę innym (za pomocą metody yield). W przeciwnym wypadku cała praca musi być skończona zanim system zleci wykonanie kolejnego task-u.
-
- */
-
-/*:
- 
-## Task Local Values
-
- */
-
-/*:
 
  # Podsumowanie...
 
