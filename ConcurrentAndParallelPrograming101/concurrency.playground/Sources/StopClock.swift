@@ -4,8 +4,8 @@ import Foundation
 public func timeBlock(_ label: String, block: ()->()) {
     let start = Date()
     
-    print("Uruchamiam: " + label + "\n")
-    
+    print(label, "\n")
+
     block()
 
     let elapsedTime = Date().timeIntervalSince(start)
@@ -18,7 +18,7 @@ public func run(_ label: String, block: @escaping () async -> Void) async {
 
     let start = Date()
     
-    print("Uruchamiam: " + label + "\n")
+    print(label, "\n")
 
     await block()
 

@@ -1,5 +1,94 @@
 //: [Previous](@previous)
 
+import Foundation
+
+//swift_task_enqueueGlobal_hook = { job, _ in
+//     MainActor.shared.enqueue(job)
+//}
+
+
+/*:
+
+ # 🎭 Actor
+
+ */
+
+/*:
+
+ ## Jaką rolę pełni aktor?
+
+Strażnik własnych property. Typ referencyjny.
+
+ # Main Actor
+
+ >  Prawdopodobnie te przykłady trzeba będzie pobiec w projekcie na urządzeniu.
+
+ Specjalny aktor, który służy do handlowania UI (wszystkie widoki z SwiftUI oraz ViewController-y). Jest powiązany z główną kolejką, która używa głównego wątku.
+
+ ## Uruchamianie kodu na MainActor
+
+ Aby wywołać kod na głównym wątku za pomocą MainActor-a należy skorzystać z metody `run` i przekazać jej closure do wykonania.
+ */
+
+await run("🪷 MainActor run") {
+    await MainActor.run {
+        print("Running on main actor")
+    }
+}
+
+/*:
+
+ ## `@Sendable`
+
+ */
+
+func asyncFunction() async { print(#function) }
+
+await run("🪷 MainActor run") {
+    await MainActor.run {
+        print("Running on main actor")
+        await asyncFunction()
+        print("Done running on main actor")
+    }
+}
+
+/*:
+
+ ## `@MainActor`
+
+ */
+
+func longRunningAsyncWork(tag: Int) async {
+    try? await Task.sleep(for: .seconds(2))
+
+    print(#function, "done.")
+}
+
+func longRunningSyncWork() {
+
+    let future = Date.now.addingTimeInterval(2)
+
+    while Date.now < future {}
+
+    print(#function, "done.")
+}
+
+@MainActor
+func mainActorFunction() { print(#function) }
+
+/*:
+### Na klasie
+
+ Dostęp do property i wywołanie metod będzie się odbywać przez `MainActor`a.
+ */
+@MainActor
+class MainActorClass {
+
+}
+
+let mainActorClosure: () -> Void = { @MainActor in
+
+}
 
 
 /*:
