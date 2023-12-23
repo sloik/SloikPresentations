@@ -103,6 +103,9 @@ let mainActorClosure: () -> Void = { @MainActor in
  Actor Reentrancy](https://forums.swift.org/t/actor-reentrancy/59484)
  * [Actors can rule your DDD world - Hannes Lowette - NDC Porto 2022](https://youtu.be/WDd1QSZBjHI)
  * [MainActor usage in Swift explained to dispatch to the main thread](https://www.avanderlee.com/swift/mainactor-dispatch-main-thread)
+ * [Swift Lee - Thread dispatching and Actors: understanding execution](https://www.avanderlee.com/concurrency/thread-dispatching-actor-execution)
+ * [Controlling Actors With Custom Executors](https://jackmorris.xyz/posts/2023/11/21/controlling-actors-with-custom-executors)
+ * [Jack Morris - Distributing Work Between Actors](https://jackmorris.xyz/posts/2023/11/06/distributing-work-between-actors)
 
  */
 

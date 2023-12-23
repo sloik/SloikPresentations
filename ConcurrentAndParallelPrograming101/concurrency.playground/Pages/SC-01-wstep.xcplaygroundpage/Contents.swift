@@ -79,6 +79,8 @@
  * [TaskGroup as a workflow design tool](https://trycombine.com/posts/swift-concurrency-task-group-workflow/)
  * [A crash course of async await (Swift Concurrency) - Shai Mishali - Swift Heroes 2022](https://youtu.be/uWqy5KZXSlA)
  * [Your Brain 🧠 on Swift Concurrency - iOS Conf SG 2023](https://youtu.be/zgCtube1DSg)
+ * [YT - Matthew Massicotte - The Bleeding Edge of Swift Concurrency](https://youtu.be/HqjqwW12wpw?si=9B9pmNkHcJJoG1eW)
+ * [Swift Concurrency Waits for No One](https://saagarjha.com/blog/2023/12/22/swift-concurrency-waits-for-no-one/)
 
  */
 
