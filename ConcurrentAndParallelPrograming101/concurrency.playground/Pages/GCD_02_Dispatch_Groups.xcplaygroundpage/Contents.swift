@@ -142,6 +142,10 @@ xtimeBlock("🥁 Rozwiązanie Przy Asynchronicznych Metodach") {
 
  Ten mechanizm możemy wykorzystać do zlecania wielu zadań i oczekiwaniu aż wszystkie się wykonają (np. asynchroniczne pobranie 20 obrazków itd.).
 
+ # Linki
+
+ * [YT - Swift Arcade - Grouping network calls like a boss - DispatchGroup🛤️](https://youtu.be/Juadc1NVLsg)
+
 ---
 
  [Wstecz](@previous) | [Następna strona](@next)

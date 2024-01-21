@@ -106,6 +106,7 @@ let mainActorClosure: () -> Void = { @MainActor in
  * [Swift Lee - Thread dispatching and Actors: understanding execution](https://www.avanderlee.com/concurrency/thread-dispatching-actor-execution)
  * [Controlling Actors With Custom Executors](https://jackmorris.xyz/posts/2023/11/21/controlling-actors-with-custom-executors)
  * [Jack Morris - Distributing Work Between Actors](https://jackmorris.xyz/posts/2023/11/06/distributing-work-between-actors)
+ * [Exploring Actors and Protocol Extensions - Can Swift Keep Its Compile-Safe Thread Management Promise? - Author: Lucas van Dongen](https://lucasvandongen.dev/swift_actors_and_protocol_extensions.php)
 
  */
 

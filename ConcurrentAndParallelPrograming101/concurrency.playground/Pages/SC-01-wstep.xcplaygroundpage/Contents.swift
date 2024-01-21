@@ -81,6 +81,9 @@
  * [Your Brain 🧠 on Swift Concurrency - iOS Conf SG 2023](https://youtu.be/zgCtube1DSg)
  * [YT - Matthew Massicotte - The Bleeding Edge of Swift Concurrency](https://youtu.be/HqjqwW12wpw?si=9B9pmNkHcJJoG1eW)
  * [Swift Concurrency Waits for No One](https://saagarjha.com/blog/2023/12/22/swift-concurrency-waits-for-no-one/)
+ * [Managing Combine, your existing code, and async/await - Donny Wals - Do iOS 2022](https://youtu.be/r3WQTh1LB4k?si=GivU-1QF_GUx5e0c)
+ * [YT - Swift Connection 2023 - Daniel Steinberg - Floating Down an AsyncStream](https://youtu.be/zYUt8O-u9Sg)
+ * [YT - Grateful Shutdown with Structured Concurrency | Simon Vergauwen @ Advanced Kotlin Dev Day 2022](https://youtu.be/A69_t_oEP_E)
 
  */
 
