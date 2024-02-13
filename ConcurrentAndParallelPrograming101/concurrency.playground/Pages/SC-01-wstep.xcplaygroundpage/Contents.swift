@@ -84,6 +84,9 @@
  * [Managing Combine, your existing code, and async/await - Donny Wals - Do iOS 2022](https://youtu.be/r3WQTh1LB4k?si=GivU-1QF_GUx5e0c)
  * [YT - Swift Connection 2023 - Daniel Steinberg - Floating Down an AsyncStream](https://youtu.be/zYUt8O-u9Sg)
  * [YT - Grateful Shutdown with Structured Concurrency | Simon Vergauwen @ Advanced Kotlin Dev Day 2022](https://youtu.be/A69_t_oEP_E)
+ * [YT - Kotlin by JetBrains - Coroutines Beyond Concurrency by Alex Semin](https://youtu.be/NwYx5l5Zzes)
+ * [YT - Swiftful Thinking - How to use AsyncStream in Swift | Swift Concurrency #18](https://youtu.be/gi38bouUI2Q)
+ * [YT - Strange Loop Conference - "Continuations on the Web and in your OS" by Jay McCarthy (2013)](https://youtu.be/BAMtstt3Jp8)
 
  */
 
