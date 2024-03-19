@@ -66,17 +66,13 @@
  * [YT - Swift Concurrency Under the Hood - iOS Conf SG 2022](https://youtu.be/wp5vIVxABFk)
  * [Limit Swift Concurrency's cooperative pool
 ](https://alejandromp.com/blog/limit-swift-concurrency-cooperative-pool)
- * [Task Groups in Swift explained with code examples](https://www.avanderlee.com/concurrency/task-groups-in-swift)
  * [Debouncing with Swift concurrency](https://sideeffect.io/posts/2023-01-11-regulate)
  * [Async/Await in Swift](https://youtu.be/esmf26aGz4s)
  * [How do Actors work in Swift?](https://youtu.be/8jvtHCXJ4Ow)
  * [YT - 2021 LLVM Dev Mtg “Asynchronous Functions in Swift”](https://youtu.be/H_K-us4-K7s)
  * [YT - 2016 LLVM Developers’ Meeting: G. Nishanov “LLVM Coroutines”](https://youtu.be/Ztr8QvMhqmQ)
  * [YT - 2018 LLVM Developers’ Meeting: J. McCall “Coroutine Representations and ABIs in LLVM”](https://youtu.be/wyAbV8AM9PM)
- * [Detached Tasks in Swift explained with code examples](https://www.avanderlee.com/concurrency/detached-tasks)
  * [Apple - Improving app responsiveness](https://developer.apple.com/documentation/xcode/improving-app-responsiveness)
- * [SwiftUI's .task modifier](https://alexanderweiss.dev/blog/2023-03-05-swiftui-task-modifier)
- * [TaskGroup as a workflow design tool](https://trycombine.com/posts/swift-concurrency-task-group-workflow/)
  * [A crash course of async await (Swift Concurrency) - Shai Mishali - Swift Heroes 2022](https://youtu.be/uWqy5KZXSlA)
  * [Your Brain 🧠 on Swift Concurrency - iOS Conf SG 2023](https://youtu.be/zgCtube1DSg)
  * [YT - Matthew Massicotte - The Bleeding Edge of Swift Concurrency](https://youtu.be/HqjqwW12wpw?si=9B9pmNkHcJJoG1eW)
@@ -85,8 +81,10 @@
  * [YT - Swift Connection 2023 - Daniel Steinberg - Floating Down an AsyncStream](https://youtu.be/zYUt8O-u9Sg)
  * [YT - Grateful Shutdown with Structured Concurrency | Simon Vergauwen @ Advanced Kotlin Dev Day 2022](https://youtu.be/A69_t_oEP_E)
  * [YT - Kotlin by JetBrains - Coroutines Beyond Concurrency by Alex Semin](https://youtu.be/NwYx5l5Zzes)
- * [YT - Swiftful Thinking - How to use AsyncStream in Swift | Swift Concurrency #18](https://youtu.be/gi38bouUI2Q)
  * [YT - Strange Loop Conference - "Continuations on the Web and in your OS" by Jay McCarthy (2013)](https://youtu.be/BAMtstt3Jp8)
+ * [GitHub - ConcurrencyRecipes](https://github.com/mattmassicotte/ConcurrencyRecipes)
+ * [Objc.io - Swift Talk # 281 - Structured Concurrency (Part 1)](https://talk.objc.io/episodes/S01E281-structured-concurrency-part-1)
+ * [Objc.io - Swift Talk # 282 - Structured Concurrency (Part 2)](https://talk.objc.io/episodes/S01E282-structured-concurrency-part-2)
 
  */
 

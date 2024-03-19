@@ -421,6 +421,13 @@ Metoda `checkCancellation` zawsze rzuca instancję `CancellationError`. Jeżeli 
 
  * [WWDC'23 - Beyond the basics of structured concurrency](https://developer.apple.com/wwdc23/10170)
  * [WWDC Notes: Swift concurrency: Behind the scenes](https://www.donnywals.com/wwdc-notes-swift-concurrency-behind-the-scenes/)
+ * [Task Groups in Swift explained with code examples](https://www.avanderlee.com/concurrency/task-groups-in-swift)
+ * [TaskGroup as a workflow design tool](https://trycombine.com/posts/swift-concurrency-task-group-workflow/)
+ * [Detached Tasks in Swift explained with code examples](https://www.avanderlee.com/concurrency/detached-tasks)
+ * [SwiftUI's .task modifier](https://alexanderweiss.dev/blog/2023-03-05-swiftui-task-modifier)
+
+
+
 
  */
 

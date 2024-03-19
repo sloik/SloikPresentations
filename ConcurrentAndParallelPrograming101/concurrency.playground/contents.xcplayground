@@ -19,9 +19,10 @@
         <page name='GCD_04_Dispatch_Once_After'/>
         <page name='SC-01-wstep'/>
         <page name='SC-02-Task_AsyncFunc'/>
-        <page name='SC-03-Task_Local_Values'/>
-        <page name='SC-04-Task_Detached'/>
         <page name='SC-30-structured-programming'/>
-        <page name='SC-50Actors_MainActor'/>
+        <page name='SC-50-Actors_MainActor'/>
+        <page name='SC-40-Task_Detached'/>
+        <page name='SC-60-Task_Local_Values'/>
+        <page name='SC-70-Async-Sequence'/>
     </pages>
 </playground>
