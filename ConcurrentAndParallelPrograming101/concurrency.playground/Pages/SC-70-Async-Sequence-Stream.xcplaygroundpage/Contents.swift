@@ -13,6 +13,7 @@ var greeting = "Hello, playground"
  * [Objc.io - Swift Talk # 271 -
  Swift Concurrency: Async Sequences (Part 3)](https://talk.objc.io/episodes/S01E271-swift-concurrency-async-sequences-part-3)
  * [Objc.io - Swift Talk # 272 - Swift Concurrency: Async Streams](https://talk.objc.io/episodes/S01E272-swift-concurrency-async-streams)
+ * [Objc.io - Swift Talk # 283 - Delegates and AsyncStream](https://talk.objc.io/episodes/S01E283-delegates-and-asyncstream)
  * [YT - Swiftful Thinking - How to use AsyncStream in Swift | Swift Concurrency #18](https://youtu.be/gi38bouUI2Q)
 
 

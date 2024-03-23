@@ -23,6 +23,6 @@
         <page name='SC-50-Actors_MainActor'/>
         <page name='SC-40-Task_Detached'/>
         <page name='SC-60-Task_Local_Values'/>
-        <page name='SC-70-Async-Sequence'/>
+        <page name='SC-70-Async-Sequence-Stream'/>
     </pages>
 </playground>
