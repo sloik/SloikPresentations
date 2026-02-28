@@ -23,7 +23,7 @@ let package = Package(
         .package(
             name: "OptionalAPI",
             url: "https://github.com/sloik/OptionalAPI",
-            from: "6.1.0"
+            from: "6.1.1"
         ),
 
     ],
